@@ -19,7 +19,6 @@ barplot_eumelareg(
   textsize = 14,
   brewer.palette = "RdYlBu",
   ylab = "Value",
-  scale = 5,
   dotplot.binwidth = 1
 )
 }
@@ -48,6 +47,8 @@ a multiple of 5.}
 
 \item{errorbar.size}{Thickness of errorbar line.}
 
+\item{textsize}{Size of the axes text defined by the function \code{theme_eumelareg_barplot}}
+
 \item{brewer.palette}{Color palette from package \code{RColorBrewer} or custom color palette.}
 
 \item{ylab}{Label for y-axis.}
@@ -59,7 +60,11 @@ This function plots a default EuMelaReg Barplot produced with \code{ggplot2}. Si
 additional custom layers can be added with the \code{+} operator.
 }
 \examples{
+# generate data with 6 random groups with 500 observations each
+library(data.table)
 dt <- data.table(group = factor(rep(1:6,500)), value = rnorm(3000, 50,15))
-barplot_eumelareg(data = dt, x="group", y = "value", n.vjust =.07, 
+
+# Barplot with standard deviation and points showing the distribution of the data
+barplot_eumelareg(data = dt, x="group", y = "value", n.vjust =.07,
                   dotplot.binwidth = 0.5, brewer.palette = "Blues")
 }

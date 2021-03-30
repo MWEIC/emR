@@ -12,8 +12,3 @@ theme_eumelareg_barplot(textsize = 14)
 \description{
 This function defines the basic graphical representation of barplots for EuMelaReg
 }
-\examples{
-ggplot(mpg, aes(class, hwy)) +
-            geom_bar(stat = "summary", fun = "mean", color = "black") +
-            theme_eumelareg_barplot()
-}

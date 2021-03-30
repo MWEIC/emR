@@ -1,12 +1,20 @@
 Package: emR
 Title: Dictionary for EuMelaReg functions (analysis of clinical studies)
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     person(given = "Marc",
            family = "Bender",
            role = c("aut", "cre"),
            email = "mbender1992@web.de")
 Description: TBD.
+Imports: 
+    data.table,
+    ggpubr,
+    ggplot2,
+    gridExtra, 
+    stats,
+    survival, 
+    survminer
 License: `use_mit_license()`
 Encoding: UTF-8
 LazyData: true

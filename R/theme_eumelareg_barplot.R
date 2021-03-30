@@ -2,9 +2,6 @@
 #'
 #' This function defines the basic graphical representation of barplots for EuMelaReg
 #' @param textsize The default textsize used for Barplots
-#' @examples ggplot(mpg, aes(class, hwy)) +
-#'             geom_bar(stat = "summary", fun = "mean", color = "black") +
-#'             theme_eumelareg_barplot()
 #' @export
 
 theme_eumelareg_barplot <- function(textsize=14){
