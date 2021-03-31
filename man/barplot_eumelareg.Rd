@@ -17,7 +17,8 @@ barplot_eumelareg(
   errorbar.width = 0.3,
   errorbar.size = 1.3,
   textsize = 14,
-  brewer.palette = "RdYlBu",
+  brewer.palette = NULL,
+  custom.palette = NULL,
   ylab = "Value",
   dotplot.binwidth = 1
 )
@@ -49,7 +50,9 @@ a multiple of 5.}
 
 \item{textsize}{Size of the axes text defined by the function \code{theme_eumelareg_barplot}}
 
-\item{brewer.palette}{Color palette from package \code{RColorBrewer} or custom color palette.}
+\item{brewer.palette}{Color palette from package \code{RColorBrewer}. Can only be specified if custom.palette is NULL.}
+
+\item{custom.palette}{Custom color palette used in \code{scale_fill_manual()}. Can only be specified if brewer.palette is NULL.}
 
 \item{ylab}{Label for y-axis.}
 

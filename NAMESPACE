@@ -3,6 +3,7 @@
 export(barplot_eumelareg)
 export(breakFun)
 export(breakFun2)
+export(emr_cols)
 export(roundUp)
 export(survplot_eumelareg)
 export(theme_eumelareg_barplot)
