@@ -33,7 +33,7 @@
 barplot_eumelareg <- function(data,x,y,n.vjust = 0.05, bar.border.size = 1, bar.alpha = 0.5, bar.width = 0.5, y.breaks = breakFun,
                               errorbar.fun = "mean_sdl", errorbar.width = 0.3, errorbar.size = 1.3, textsize = 14,
                               brewer.palette = NULL,custom.palette = NULL, ylab = "Value", dotplot.binwidth = 1){
-
+  n <- y.pos <- NULL
   data <- data.table::data.table(data)
 
   n <- aggregate(as.formula(paste(y,"~",x)), data = data, FUN = length)

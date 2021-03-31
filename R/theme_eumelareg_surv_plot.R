@@ -5,10 +5,8 @@
 #' @export
 
 theme_eumelareg_surv_plot <- function(textsize =12){
-  theme_bw() +
-    theme(panel.grid = element_blank(),
-          panel.border = element_blank(),
-          axis.line.y.left = element_line(),
+  theme_eumelareg_base() +
+    theme(axis.line.y.left = element_line(),
           axis.line.x.bottom = element_line(),
           axis.text = element_text(size = textsize),
           axis.title = element_text(face = "bold", size = textsize))
