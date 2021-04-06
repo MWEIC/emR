@@ -1,10 +1,16 @@
 #' An emR function
 #'
-#' This function
+#' This function draws a sankey plot to display the directed flow between strata (from left to right).
+#' A dataframe with one row per patient is used as input variable. This dataframe is transformed to a frequency table
+#' and links between the strata are calculated. The frequencies of each flow from one stratum to another are added and
+#' duplicate links are removed. The nodes are named after the variables within the strata combined with
+#' a number indicating the stratum. The sankey plot is then drawn using the \code{networkD3} package. Additional
+#' arguments can be passed on to the \code{sankeyNetwork} function from said package.
 #' @param data data.frame containing the different strata with one row for each patient
+#' @param ... Additional arguments for the \code{sankeyNetwork} function
 #' @export
 
-sankey_plot_eumelareg <- function(data){
+sankey_plot_eumelareg <- function(data,...){
 
   # calculate frequency table
   df <- as.data.frame(table(data))
@@ -42,9 +48,10 @@ sankey_plot_eumelareg <- function(data){
   # transform links into matched objects
   links$source <- match(links$source, nodes$name) - 1
   links$target <- match(links$target, nodes$name) - 1
+  links$group <- as.character(links$source)
 
   networkD3::sankeyNetwork(Links = links, Nodes = nodes, Source = 'source',
-                Target = 'target', Value = 'Freq', NodeID = 'name')
+                Target = 'target', Value = 'Freq',LinkGroup = "group", NodeID = 'name',...)
 }
 
 
