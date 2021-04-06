@@ -1,4 +1,4 @@
-#' An emR function
+#' Draw Sankey Plot in EuMelaReg style
 #'
 #' This function draws a sankey plot to display the directed flow between strata (from left to right).
 #' A dataframe with one row per patient is used as input variable. This dataframe is transformed to a frequency table

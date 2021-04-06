@@ -2,7 +2,7 @@
 % Please edit documentation in R/sankey_plot_eumelareg.R
 \name{sankey_plot_eumelareg}
 \alias{sankey_plot_eumelareg}
-\title{An emR function}
+\title{Draw Sankey Plot in EuMelaReg style}
 \usage{
 sankey_plot_eumelareg(data, ...)
 }

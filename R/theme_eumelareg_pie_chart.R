@@ -1,4 +1,4 @@
-#' An emR function
+#' Theme for pie charts in EuMelaReg style
 #'
 #' This function defines the basic graphical representation of barplots for EuMelaReg
 #' @export

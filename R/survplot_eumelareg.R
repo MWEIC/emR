@@ -1,4 +1,4 @@
-#' An emR function
+#' Survival curve in EuMelaReg style
 #'
 #' This function plots a default EuMelaReg survival plot (Kaplan-Meier plot) produced with \code{survminer}.
 #' @param fit A survfit object generated with the \code{survfit()} function from the \code{survival} package.

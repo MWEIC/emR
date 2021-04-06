@@ -1,4 +1,4 @@
-#' An emR function
+#' Barplot with points showing the data distribution in EuMelaReg style
 #'
 #' This function plots a default EuMelaReg Barplot produced with \code{ggplot2}. Similar to a ggplot2 object,
 #' additional custom layers can be added with the \code{+} operator.
@@ -63,3 +63,4 @@ barplot_eumelareg <- function(data,x,y,n.vjust = 0.05, bar.border.size = 1, bar.
   }
 
 }
+

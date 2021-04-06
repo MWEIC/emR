@@ -2,7 +2,7 @@
 % Please edit documentation in R/helper_functions.R
 \name{roundUp}
 \alias{roundUp}
-\title{Part of helper functions used in this package}
+\title{Part of helper functions used in the emR package}
 \usage{
 roundUp(x)
 }

@@ -1,6 +1,6 @@
-#' An emR function
+#' Calculate data flow
 #'
-#' This function
+#' This function calculates the flow from 1 stratum to the next.
 #' @param x number of column containing source data
 #' @param y number of column containing target data
 #' @param data data.frame containing the different strata with one row for each patient

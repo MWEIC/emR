@@ -1,4 +1,4 @@
-#' An emR function
+#' Theme for survival curves in EuMelaReg style
 #'
 #' This function defines the basic graphical representation of survival curves (Kaplan-Meier Plots) for EuMelaReg
 #' @param textsize The default textsize used for survival curves.

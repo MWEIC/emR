@@ -2,7 +2,7 @@
 % Please edit documentation in R/theme_eumelareg_surv_table.R
 \name{theme_eumelareg_surv_table}
 \alias{theme_eumelareg_surv_table}
-\title{An emR function}
+\title{Theme for risk table in EuMelaReg style}
 \usage{
 theme_eumelareg_surv_table()
 }

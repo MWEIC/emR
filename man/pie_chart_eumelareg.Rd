@@ -2,7 +2,7 @@
 % Please edit documentation in R/pie_chart_eumelareg.R
 \name{pie_chart_eumelareg}
 \alias{pie_chart_eumelareg}
-\title{An emR function}
+\title{Pie Chart in EuMelaReg style}
 \usage{
 pie_chart_eumelareg(
   y,

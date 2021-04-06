@@ -1,4 +1,4 @@
-#' An emR function
+#' Theme for risk table in EuMelaReg style
 #'
 #' This function defines the basic graphical representation of the table below survival curves for EuMelaReg, showing
 #' the number of patients at risk at a given time.

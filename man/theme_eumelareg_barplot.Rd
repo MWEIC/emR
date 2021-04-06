@@ -2,7 +2,7 @@
 % Please edit documentation in R/theme_eumelareg_barplot.R
 \name{theme_eumelareg_barplot}
 \alias{theme_eumelareg_barplot}
-\title{An emR function}
+\title{Theme for barplots in EuMelaReg style}
 \usage{
 theme_eumelareg_barplot(textsize = 14)
 }

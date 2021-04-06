@@ -2,7 +2,7 @@
 % Please edit documentation in R/theme_eumelareg_pie_chart.R
 \name{theme_eumelareg_pie_chart}
 \alias{theme_eumelareg_pie_chart}
-\title{An emR function}
+\title{Theme for pie charts in EuMelaReg style}
 \usage{
 theme_eumelareg_pie_chart()
 }

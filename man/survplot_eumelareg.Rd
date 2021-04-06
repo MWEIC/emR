@@ -2,7 +2,7 @@
 % Please edit documentation in R/survplot_eumelareg.R
 \name{survplot_eumelareg}
 \alias{survplot_eumelareg}
-\title{An emR function}
+\title{Survival curve in EuMelaReg style}
 \usage{
 survplot_eumelareg(
   fit,

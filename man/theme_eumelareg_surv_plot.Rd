@@ -2,7 +2,7 @@
 % Please edit documentation in R/theme_eumelareg_surv_plot.R
 \name{theme_eumelareg_surv_plot}
 \alias{theme_eumelareg_surv_plot}
-\title{An emR function}
+\title{Theme for survival curves in EuMelaReg style}
 \usage{
 theme_eumelareg_surv_plot(textsize = 12)
 }
