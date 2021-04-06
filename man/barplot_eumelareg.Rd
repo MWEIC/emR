@@ -2,7 +2,7 @@
 % Please edit documentation in R/barplot_eumelareg.R
 \name{barplot_eumelareg}
 \alias{barplot_eumelareg}
-\title{An emR function}
+\title{Barplot with points showing the data distribution in EuMelaReg style}
 \usage{
 barplot_eumelareg(
   data,

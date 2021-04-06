@@ -2,7 +2,7 @@
 % Please edit documentation in R/emr_cols.R
 \name{emr_cols}
 \alias{emr_cols}
-\title{An emR function}
+\title{Color palette for EuMelaReg style}
 \usage{
 emr_cols(n)
 }

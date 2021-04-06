@@ -1,4 +1,4 @@
-#' An emR function
+#' Forest Plot for Cox Proportional Hazards Model in EuMelaReg style
 #'
 #' This code generates a pie chart to show distribution of variables.
 #' @inheritParams survminer::ggforest

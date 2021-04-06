@@ -1,4 +1,4 @@
-#' Part of helper functions used in this package
+#' Part of helper functions used in the emR package
 #'
 #' This function rounds values to the closest number, which can be divided by five and adjust to different orders of
 #' magnitude by using different exponentials of five depending on the difference between the maximum and minimum value in x.

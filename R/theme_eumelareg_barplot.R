@@ -1,4 +1,4 @@
-#' An emR function
+#' Theme for barplots in EuMelaReg style
 #'
 #' This function defines the basic graphical representation of barplots for EuMelaReg
 #' @param textsize The default textsize used for Barplots

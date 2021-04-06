@@ -1,4 +1,4 @@
-#' An emR function
+#' Pie Chart in EuMelaReg style
 #'
 #' This code generates a pie chart to show distribution of variables.
 #' @param y Vector with group names (as character or factor)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/forestplot_eumelareg.R
 \name{forestplot_eumelareg}
 \alias{forestplot_eumelareg}
-\title{An emR function}
+\title{Forest Plot for Cox Proportional Hazards Model in EuMelaReg style}
 \usage{
 forestplot_eumelareg(
   model,

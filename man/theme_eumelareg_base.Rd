@@ -2,7 +2,7 @@
 % Please edit documentation in R/theme_eumelareg_base.R
 \name{theme_eumelareg_base}
 \alias{theme_eumelareg_base}
-\title{An emR function}
+\title{Base theme in EuMelaReg style}
 \usage{
 theme_eumelareg_base()
 }

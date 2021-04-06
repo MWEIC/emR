@@ -1,4 +1,4 @@
-#' An emR function
+#' Base theme in EuMelaReg style
 #'
 #' This function defines the base theme for eumelareg functions with longer y-axis ticks and corbel as the default font.
 #' @export

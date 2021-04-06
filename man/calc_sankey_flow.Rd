@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_sankey_flow.R
 \name{calc_sankey_flow}
 \alias{calc_sankey_flow}
-\title{An emR function}
+\title{Calculate data flow}
 \usage{
 calc_sankey_flow(x, y, data)
 }
@@ -14,5 +14,5 @@ calc_sankey_flow(x, y, data)
 \item{data}{data.frame containing the different strata with one row for each patient}
 }
 \description{
-This function
+This function calculates the flow from 1 stratum to the next.
 }
