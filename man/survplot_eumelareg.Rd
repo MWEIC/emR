@@ -10,11 +10,11 @@ survplot_eumelareg(
   time = "time",
   status = "status",
   var,
-  xlab = "Time in days",
+  xlab = "Time in months",
   ylab = "Probability of Overall Survival",
   pval = TRUE,
   break.y.by = 0.1,
-  break.time.by = 90,
+  break.time.by = 3,
   ggtheme = theme_eumelareg_surv_plot(),
   tables.theme = theme_eumelareg_surv_table(),
   axes.offset = TRUE,
@@ -23,7 +23,7 @@ survplot_eumelareg(
   risk.table.title = "No. at Risk",
   table.margin.left = 0,
   legend.labs = NULL,
-  palette = c("#E7B800", "#2E9FDF")
+  palette = "RdYlBu"
 )
 }
 \arguments{
