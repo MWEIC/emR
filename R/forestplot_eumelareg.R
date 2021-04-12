@@ -3,10 +3,12 @@
 #' This code generates a pie chart to show distribution of variables.
 #' @inheritParams survminer::ggforest
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
+#' @param point.size Size of mean points.
+#' @param line.size Size of errorbar line.
 #' @export
 
 forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for disease progression or death (95% CI)",
-                       cpositions = c(0.02,   0.22, 0.4), fontsize = 0.7, refLabel = "reference", noDigits = 2,
+                       cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, refLabel = "reference", noDigits = 2,
                        varnames = NULL){
 
   conf.high <- conf.low <- estimate <- var <- NULL
@@ -77,11 +79,11 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
                     0.5, ymin = exp(rangeplot[1]), ymax = exp(rangeplot[2]),
                   fill = ordered(seq_along(var)%%2 + 1))) +
     # color of the rectangles
-    scale_fill_manual(values = c("#FFFFFF33","grey90"), guide = "none") +
+    scale_fill_manual(values = c("#FFFFFF33","grey95"), guide = "none") +
     # show confidence intervals
-    geom_errorbar(aes(ymin = exp(conf.low), ymax = exp(conf.high)),size = 0.9, width =0) +
+    geom_errorbar(aes(ymin = exp(conf.low), ymax = exp(conf.high)),size = line.size, width =0) +
     # plot mean points
-    geom_point(pch = 16, size = 4, color = "#009AA6") +
+    geom_point(pch = 16, size = point.size, color = "#009AA6") +
     # add no effect line at 1
     geom_hline(yintercept = 1, linetype = 2) +
     coord_flip(ylim = exp(rangeplot)) +

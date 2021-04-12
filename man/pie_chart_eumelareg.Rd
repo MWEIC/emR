@@ -8,6 +8,7 @@ pie_chart_eumelareg(
   y,
   text.color = "white",
   text.size = 6,
+  x.pos = 1.2,
   cols = NULL,
   title = NULL
 )
@@ -18,6 +19,8 @@ pie_chart_eumelareg(
 \item{text.color}{Color of the text within the chart to display percentages.}
 
 \item{text.size}{Size of the text within the chart.}
+
+\item{x.pos}{Position of text labels. Decrease to get closer to the origin and increase to move text towards the outer border.}
 
 \item{cols}{Color scheme for the pie chart. Can be an \code{emr_cols} object or manual scale.}
 

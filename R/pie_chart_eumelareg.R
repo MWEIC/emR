@@ -4,11 +4,12 @@
 #' @param y Vector with group names (as character or factor)
 #' @param text.color Color of the text within the chart to display percentages.
 #' @param text.size Size of the text within the chart.
+#' @param x.pos Position of text labels. Decrease to get closer to the origin and increase to move text towards the outer border.
 #' @param cols Color scheme for the pie chart. Can be an \code{emr_cols} object or manual scale.
 #' @param title Plot title.
 #' @export
 
-pie_chart_eumelareg <- function(y, text.color = "white", text.size = 6, cols = NULL, title=NULL){
+pie_chart_eumelareg <- function(y, text.color = "white",text.size = 6,x.pos = 1.2, cols = NULL, title=NULL){
   df <- group <- value <- NULL
   df <- as.data.frame(table(y)/length(y))
   colnames(df) <- c("group", "value")
@@ -16,11 +17,15 @@ pie_chart_eumelareg <- function(y, text.color = "white", text.size = 6, cols = N
   ggplot(df, aes(x="", y=value, fill=group)) +
     geom_bar(stat="identity", width=1, color = "white")+
     coord_polar("y", start=0) +
-    geom_text(aes(label = paste0(round(value*100), "%")),
+    geom_text(aes(label = paste0(round(value*100), "%"), x = x.pos),
               position = position_stack(vjust = 0.5), color = text.color, size = text.size) +
     labs(x = NULL, y = NULL, fill = NULL, title = title) +
     theme_eumelareg_pie_chart() +
-    if (!is.null(cols)) scale_fill_manual(values=cols)
+    if (!is.null(cols)){
+      scale_fill_manual(values=cols)
+    } else {
+      scale_fill_viridis(discrete = TRUE)
+    }
 }
 
 

@@ -9,7 +9,9 @@ forestplot_eumelareg(
   data = NULL,
   main = "Hazard ratio for disease progression or death (95\% CI)",
   cpositions = c(0.02, 0.22, 0.4),
+  point.size = 3,
   fontsize = 0.7,
+  line.size = 0.7,
   refLabel = "reference",
   noDigits = 2,
   varnames = NULL
@@ -25,7 +27,11 @@ will be extracted from 'fit' object.}
 
 \item{cpositions}{relative positions of first three columns in the OX scale.}
 
+\item{point.size}{Size of mean points.}
+
 \item{fontsize}{relative size of annotations in the plot. Default value: 0.7.}
+
+\item{line.size}{Size of errorbar line.}
 
 \item{refLabel}{label for reference levels of factor variables.}
 
