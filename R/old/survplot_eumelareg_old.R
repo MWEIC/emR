@@ -1,6 +1,7 @@
 #' Survival curve in EuMelaReg style
 #'
 #' This function plots a default EuMelaReg survival plot (Kaplan-Meier plot) produced with \code{survminer}.
+#' @param fit A survfit object generated with the \code{survfit()} function from the \code{survival} package.
 #' @param data data.frame or data.table containing the same data as used in the \code{survfit()} function.
 #' @param time The time interval from start of observation until date of event (e.g. disease progression or death)
 #' or censoring.
@@ -28,14 +29,12 @@
 #' @seealso [ggsurvplot()]
 #' @export
 
-survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab = "Time in months",
+survplot_eumelareg <- function(fit,data,time = "time", status = "status", var, xlab = "Time in months",
                                ylab = "Probability of Overall Survival",pval = TRUE, break.y.by = 0.1,
                                break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(),
                                tables.theme = theme_eumelareg_surv_table(), axes.offset = TRUE,
                                risk.table = "absolute", risk.table.y.text = TRUE,risk.table.title = "No. at Risk",
                                table.margin.left = 0, legend.labs = NULL, palette = "RdYlBu"){
-
-  fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
 
   # plot survival curve
   ggsurv <- ggsurvplot(fit,data = data, xlab = xlab,  ylab = ylab, pval = pval,
@@ -60,6 +59,23 @@ survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab 
   colnames(tbl) <- c("No. of patients", "Median  (95% CI)")
   tblGrob <- gridExtra::tableGrob(tbl, theme = gridExtra::ttheme_minimal())
 
+  # calculate cox regression model
+  # cox.fit <- coxph(as.formula(paste("Surv(",time,",",status,") ~ ", var)), data =  data)
+  # res <- summary(cox.fit)
+  #
+  # # extract coefficient and 95% CI from cox regression
+  # HR <- res$coefficients[2]
+  # lower <- res$conf.int[3]
+  # upper <- res$conf.int[4]
+  #
+  # # define text below table on the right of the figure
+  # HR_string <- paste("Hazard Ratio for \n Disease Progression or Death ", format(round(HR,2), nsmall = 2),
+  #                    "\n (95% CI, ", format(round(lower,2), nsmall = 2),"-",
+  #                    format(round(upper,2), nsmall = 2),")", sep = "")
+  # p_string <- ifelse(res$waldtest[3] < 0.001, paste("Wald test: P<0.001", sep = ""),
+  #                    paste("Wald test: P=",round(res$waldtest[3],3), sep = ""))
+  # txt <- paste(HR_string, p_string, sep = "\n")
+
   # add blank plot for arranging
   blankPlot <- ggplot()+geom_blank(aes(1,1))+
     theme(plot.background = element_blank(), panel.grid.major = element_blank(),  panel.grid.minor = element_blank(),
@@ -70,6 +86,9 @@ survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab 
 
   # arrange plot, table and text
   p1 <- ggpubr::ggarrange(ggsurv$plot, ggsurv$table, ncol = 1, heights = c(3,1))
+  # p2 <- ggpubr::ggarrange(tblGrob,blankPlot,ggpubr::text_grob(txt), ncol = 2, nrow = 4)
   p2 <- ggpubr::ggarrange(tblGrob,blankPlot,  nrow = 2)
   ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2,1))
 }
+
+
