@@ -49,6 +49,7 @@ survplot_eumelareg <- function(fit,data,time = "time", status = "status", var, x
 
   # define table with Median survival (displayed on the right of the figure)
   surv_med <- surv_median(fit)
+
   tbl <- as.data.frame(table(data[[var]]))
   tbl$median <- sapply(1:length(surv_med$median),function(x){
     paste(surv_med$median[x], " (", surv_med$lower[x],"-", surv_med$upper[x],")", sep = "")
