@@ -5,7 +5,6 @@
 \title{Survival curve in EuMelaReg style}
 \usage{
 survplot_eumelareg(
-  fit,
   data,
   time = "time",
   status = "status",
@@ -27,8 +26,6 @@ survplot_eumelareg(
 )
 }
 \arguments{
-\item{fit}{A survfit object generated with the \code{survfit()} function from the \code{survival} package.}
-
 \item{data}{data.frame or data.table containing the same data as used in the \code{survfit()} function.}
 
 \item{time}{The time interval from start of observation until date of event (e.g. disease progression or death)
