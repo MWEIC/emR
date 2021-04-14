@@ -10,11 +10,12 @@ pie_chart_eumelareg(
   text.size = 6,
   x.pos = 1.2,
   cols = NULL,
+  jco.alpha = 1,
   title = NULL
 )
 }
 \arguments{
-\item{y}{Vector with group names (as character or factor)}
+\item{y}{Vector with group names (as character or factor).}
 
 \item{text.color}{Color of the text within the chart to display percentages.}
 
@@ -23,6 +24,8 @@ pie_chart_eumelareg(
 \item{x.pos}{Position of text labels. Decrease to get closer to the origin and increase to move text towards the outer border.}
 
 \item{cols}{Color scheme for the pie chart. Can be an \code{emr_cols} object or manual scale.}
+
+\item{jco.alpha}{Transparency level, a real number between 0 and 1. Only used if cols = NULL.}
 
 \item{title}{Plot title.}
 }

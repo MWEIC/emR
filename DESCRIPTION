@@ -10,6 +10,7 @@ Description: TBD.
 Imports: 
     broom,
     data.table,
+    ggsci,
     ggpubr,
     ggplot2,
     grid,
@@ -17,6 +18,7 @@ Imports:
     insight,
     networkD3, 
     stats,
+    stringr,
     survival, 
     survminer
 License: `use_mit_license()`
