@@ -23,6 +23,8 @@ save_pie_chart_eumelareg(
 
 \item{registry}{Name of EuMelaReg registry.}
 
+\item{title}{Plot title.}
+
 \item{path}{File path where the plot shall be stored. By default a folder "Results/pie_charts" is generated
 within the working directory and objects are stored in this subfolder.}
 

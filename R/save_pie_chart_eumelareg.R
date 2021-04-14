@@ -7,6 +7,7 @@
 #' @param registry Name of EuMelaReg registry.
 #' @param path File path where the plot shall be stored. By default a folder "Results/pie_charts" is generated
 #' within the working directory and objects are stored in this subfolder.
+#' @param title Plot title.
 #' @param ... Additional parameters passed on to \code{pie_chart_eumelareg}
 #' @export
 
