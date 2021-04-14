@@ -8,8 +8,8 @@
 #' @export
 
 forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for disease progression or death (95% CI)",
-                       cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, refLabel = "reference", noDigits = 2,
-                       varnames = NULL){
+                       cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7,
+                       refLabel = "reference", noDigits = 2, varnames = NULL){
 
   conf.high <- conf.low <- estimate <- var <- NULL
   stopifnot(inherits(model, "coxph"))
@@ -41,7 +41,7 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
   toShow <- cbind(allTermsDF, coef[inds, ])[, c("var",
                                                 "level", "N", "p.value", "estimate",
                                                 "conf.low", "conf.high", "pos")]
-  if (!is.null(varnames)) {toShow$var <- varnames}
+  if (!is.null(varnames)) toShow$var <- varnames
   toShowExp <- toShow[, 5:7]
   toShowExp[is.na(toShowExp)] <- 0
   toShowExp <- format(exp(toShowExp), digits = noDigits)

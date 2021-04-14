@@ -22,7 +22,9 @@ survplot_eumelareg(
   risk.table.title = "No. at Risk",
   table.margin.left = 0,
   legend.labs = NULL,
-  palette = "RdYlBu"
+  palette = "jco",
+  pval.coord = c(0.05, 0.03),
+  ...
 )
 }
 \arguments{
@@ -79,16 +81,16 @@ e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and sc
 See details section for more information.  Can be also a numeric vector of
 length(groups); in this case a basic color palette is created using the
 function \link[grDevices]{palette}.}
+
+\item{pval.coord}{Coords of pvalue within plot.}
+
+\item{...}{Futher arguments as described hereafter and
+other arguments to be passed i) to ggplot2 geom_*() functions such
+ as linetype, size, ii) or to the function \link[ggpubr]{ggpar}() for
+ customizing the plots. See details section.}
 }
 \description{
 This function plots a default EuMelaReg survival plot (Kaplan-Meier plot) produced with \code{survminer}.
-}
-\examples{
-library(survival)
-data("lung")
-lung$sex <- ifelse(lung$sex == 1, "Male", "Female")
-fit <- survfit(Surv(time, status) ~ sex, data = lung)
-survplot_eumelareg(fit, lung, var = "sex",table.margin.left = 0,  legend.labs = c("Male", "Female"))
 }
 \seealso{
 \code{\link[=ggsurvplot]{ggsurvplot()}}

@@ -19,12 +19,7 @@
 #' @param table.margin.left Numerical. Used to adjust the risk table horizontally.
 #' @param legend.labs Character vector specifying legend labels. Used to replace the names of the strata from the fit.
 #' Should be given in the same order as those strata.
-#' @examples
-#' library(survival)
-#' data("lung")
-#' lung$sex <- ifelse(lung$sex == 1, "Male", "Female")
-#' fit <- survfit(Surv(time, status) ~ sex, data = lung)
-#' survplot_eumelareg(fit, lung, var = "sex",table.margin.left = 0,  legend.labs = c("Male", "Female"))
+#' @param pval.coord Coords of pvalue within plot.
 #' @seealso [ggsurvplot()]
 #' @export
 
@@ -33,7 +28,7 @@ survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab 
                                break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(),
                                tables.theme = theme_eumelareg_surv_table(), axes.offset = TRUE,
                                risk.table = "absolute", risk.table.y.text = TRUE,risk.table.title = "No. at Risk",
-                               table.margin.left = 0, legend.labs = NULL, palette = "RdYlBu"){
+                               table.margin.left = 0, legend.labs = NULL, palette = "jco",pval.coord = c(0.05, 0.03),...){
 
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
 
@@ -42,7 +37,7 @@ survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab 
                        break.y.by = break.y.by, break.time.by = break.time.by, ggtheme = ggtheme,
                        tables.theme = tables.theme, axes.offset = axes.offset, risk.table = risk.table,
                        risk.table.y.text = risk.table.y.text, risk.table.title = risk.table.title,
-                       legend.labs =  legend.labs, palette =  palette)
+                       legend.labs =  legend.labs, palette =  palette,pval.coord = pval.coord,...)
 
   # adjust position of risk table
   ggsurv$table <- ggsurv$table +
@@ -51,7 +46,7 @@ survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab 
   # define table with Median survival (displayed on the right of the figure)
   surv_med <- surv_median(fit)
 
-  tbl <- as.data.frame(table(data[[var]]))
+  tbl <- as.data.frame(table(data[!is.na(eval(parse(text =time))),eval(parse(text =var))]))
   tbl$median <- sapply(1:length(surv_med$median),function(x){
     paste(surv_med$median[x], " (", surv_med$lower[x],"-", surv_med$upper[x],")", sep = "")
   })
@@ -73,3 +68,6 @@ survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab 
   p2 <- ggpubr::ggarrange(tblGrob,blankPlot,  nrow = 2)
   ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2,1))
 }
+
+
+
