@@ -6,9 +6,10 @@
 \usage{
 save_surv_plot_eumelareg(
   data,
-  LOT,
-  survival = "PFS",
+  time,
+  status,
   var,
+  legend.labs = NULL,
   regID = "REGISTR",
   registry = "EUMELAREG",
   path = NULL,
@@ -18,12 +19,14 @@ save_surv_plot_eumelareg(
 \arguments{
 \item{data}{dataframe containing survival data.}
 
-\item{LOT}{Line of treatment. Numerical value, either 1 or 2.}
+\item{time}{The time interval from start of observation until date of event (e.g. disease progression or death)
+or censoring.}
 
-\item{survival}{Specify which survival shall be plotted. Allowed values include "PFS" for progression free survival
-and "OS" for overall survival. Default is "PFS".}
+\item{status}{Variable specifying if event occured or data has been censored.}
 
-\item{var}{Grouping variable to compare survival.}
+\item{var}{Variable tested for Influence on outcome.}
+
+\item{legend.labs}{Character vector specifying legend labels. Used to replace the names of the strata from the fit.}
 
 \item{regID}{Name of column containing registry information. Default is "REGISTR" as defined by SAS output.}
 

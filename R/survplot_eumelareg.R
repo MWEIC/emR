@@ -1,7 +1,7 @@
 #' Survival curve in EuMelaReg style
 #'
 #' This function plots a default EuMelaReg survival plot (Kaplan-Meier plot) produced with \code{survminer}.
-#' @param data data.frame or data.table containing the same data as used in the \code{survfit()} function.
+#' @param data data.frame or data.table containing survival data.
 #' @param time The time interval from start of observation until date of event (e.g. disease progression or death)
 #' or censoring.
 #' @param status Variable specifying if event occured or data has been censored.
