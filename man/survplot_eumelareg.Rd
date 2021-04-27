@@ -28,7 +28,7 @@ survplot_eumelareg(
 )
 }
 \arguments{
-\item{data}{data.frame or data.table containing the same data as used in the \code{survfit()} function.}
+\item{data}{data.frame or data.table containing survival data.}
 
 \item{time}{The time interval from start of observation until date of event (e.g. disease progression or death)
 or censoring.}
