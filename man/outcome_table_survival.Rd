@@ -6,10 +6,9 @@
 \usage{
 outcome_table_survival(
   data,
-  timePFS = NULL,
-  timeOS = NULL,
-  statusPFS = NULL,
-  statusOS = NULL,
+  time,
+  status,
+  surv_names,
   var,
   bestres = NULL,
   ORR = NULL,
@@ -21,13 +20,11 @@ outcome_table_survival(
 \arguments{
 \item{data}{data.frame or data.table}
 
-\item{timePFS}{Time for PFS}
+\item{time}{Time for survival}
 
-\item{timeOS}{Time for OS}
+\item{status}{censor variable}
 
-\item{statusPFS}{censor variable for PFS}
-
-\item{statusOS}{censor variable for OS}
+\item{surv_names}{names of the survival to be displayed in the table (e.g "Median PFS (95\% CI)")}
 
 \item{var}{Variable tested for Influence on outcome}
 
