@@ -25,15 +25,15 @@
 
 survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab = "Time in months",
                                ylab = "Probability of Overall Survival",pval = TRUE, break.y.by = 0.1,
-                               break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(),
+                               break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(), merge = FALSE,
                                tables.theme = theme_eumelareg_surv_table(), axes.offset = TRUE,
                                risk.table = "absolute", risk.table.y.text = TRUE,risk.table.title = "No. at Risk",
-                               table.margin.left = 0, legend.labs = NULL, palette = "jco",pval.coord = c(0.05, 0.03),...){
+                               table.margin.left = 0,plot.margin.left = 0, legend.labs = NULL, palette = "jco",pval.coord = c(0.05, 0.03),...){
 
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
 
   # plot survival curve
-  ggsurv <- ggsurvplot(fit,data = data, xlab = xlab,  ylab = ylab, pval = pval,
+  ggsurv <- ggsurvplot(fit,data = data, xlab = xlab,  ylab = ylab, pval = pval, xlim = c(0,max(data[[time]], na.rm = T)+1),
                        break.y.by = break.y.by, break.time.by = break.time.by, ggtheme = ggtheme,
                        tables.theme = tables.theme, axes.offset = axes.offset, risk.table = risk.table,
                        risk.table.y.text = risk.table.y.text, risk.table.title = risk.table.title,
@@ -42,6 +42,9 @@ survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab 
   # adjust position of risk table
   ggsurv$table <- ggsurv$table +
     theme(plot.margin = unit(c(5.5, 5.5, 5.5, table.margin.left), "points"))
+
+  ggsurv$plot <- ggsurv$plot +
+    theme(plot.margin = unit(c(5.5, 5.5, 5.5, plot.margin.left), "points"))
 
   # define table with Median survival (displayed on the right of the figure)
   surv_med <- surv_median(fit)
@@ -66,7 +69,11 @@ survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab 
   # arrange plot, table and text
   p1 <- ggpubr::ggarrange(ggsurv$plot, ggsurv$table, ncol = 1, heights = c(3,1))
   p2 <- ggpubr::ggarrange(tblGrob,blankPlot,  nrow = 2)
-  ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2,1))
+  if (merge == TRUE) {
+    ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2,1))
+  } else {
+    list(plot = p1, table = ggpubr::ggarrange(tblGrob))
+  }
 }
 
 
