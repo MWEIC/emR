@@ -15,12 +15,14 @@ survplot_eumelareg(
   break.y.by = 0.1,
   break.time.by = 3,
   ggtheme = theme_eumelareg_surv_plot(),
+  merge = FALSE,
   tables.theme = theme_eumelareg_surv_table(),
   axes.offset = TRUE,
   risk.table = "absolute",
   risk.table.y.text = TRUE,
   risk.table.title = "No. at Risk",
   table.margin.left = 0,
+  plot.margin.left = 0,
   legend.labs = NULL,
   palette = "jco",
   pval.coord = c(0.05, 0.03),
@@ -30,31 +32,34 @@ survplot_eumelareg(
 \arguments{
 \item{data}{data.frame or data.table containing survival data.}
 
-\item{time}{The time interval from start of observation until date of event (e.g. disease progression or death)
+\item{time}{the time interval from start of observation until date of event (e.g. disease progression or death)
 or censoring.}
 
-\item{status}{Variable specifying if event occured or data has been censored.}
+\item{status}{variable specifying if event occured or data has been censored.}
 
-\item{var}{Variable tested for Influence on outcome.}
+\item{var}{variable tested for Influence on outcome.}
 
 \item{xlab}{X-axis label.}
 
-\item{ylab}{Y-axis label.}
+\item{ylab}{y-axis label.}
 
 \item{pval}{logical value, a numeric or a string. If logical and TRUE, the
 p-value is added on the plot. If numeric, than the computet p-value is
 substituted with the one passed with this parameter. If character, then the
 customized string appears on the plot. See examples - Example 3.}
 
-\item{break.y.by}{Interval of breaks on the y-axis.}
+\item{break.y.by}{interval of breaks on the y-axis.}
 
 \item{break.time.by}{Interval of breaks on the x-axis (time axis).}
 
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
 
+\item{merge}{logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
+two separate figures are generated. Default is FALSE.}
+
 \item{tables.theme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
 
-\item{axes.offset}{Logical value. If TRUE the space between the plot origin and the axes is removed.}
+\item{axes.offset}{logical value. If TRUE the space between the plot origin and the axes is removed.}
 
 \item{risk.table}{Allowed values include: \itemize{ \item TRUE or FALSE
 specifying whether to show or not the risk table. Default is FALSE. \item
@@ -64,13 +69,15 @@ to show both absolute number and percentage. \item "nrisk_cumcensor" and
 "nrisk_cumevents". Show the number at risk and, the cumulative number of
 censoring and events, respectively. }}
 
-\item{risk.table.y.text}{Logical value. Default value is TRUE. If FALSE, the y axis tick labels of tables will be hidden.}
+\item{risk.table.y.text}{logical value. Default value is TRUE. If FALSE, the y axis tick labels of tables will be hidden.}
 
-\item{risk.table.title}{The title to be used for the risk table}
+\item{risk.table.title}{the title to be used for the risk table}
 
-\item{table.margin.left}{Numerical. Used to adjust the risk table horizontally.}
+\item{table.margin.left}{numerical. Used to adjust the risk table horizontally.}
 
-\item{legend.labs}{Character vector specifying legend labels. Used to replace the names of the strata from the fit.
+\item{plot.margin.left}{numerical. Used to adjust the plot horizontally.}
+
+\item{legend.labs}{character vector specifying legend labels. Used to replace the names of the strata from the fit.
 Should be given in the same order as those strata.}
 
 \item{palette}{the color palette to be used. Allowed values include "hue" for

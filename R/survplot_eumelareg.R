@@ -2,22 +2,25 @@
 #'
 #' This function plots a default EuMelaReg survival plot (Kaplan-Meier plot) produced with \code{survminer}.
 #' @param data data.frame or data.table containing survival data.
-#' @param time The time interval from start of observation until date of event (e.g. disease progression or death)
+#' @param time the time interval from start of observation until date of event (e.g. disease progression or death)
 #' or censoring.
-#' @param status Variable specifying if event occured or data has been censored.
-#' @param var Variable tested for Influence on outcome.
+#' @param status variable specifying if event occured or data has been censored.
+#' @param var variable tested for Influence on outcome.
 #' @param xlab X-axis label.
-#' @param ylab Y-axis label.
-#' @param break.y.by Interval of breaks on the y-axis.
+#' @param ylab y-axis label.
+#' @param break.y.by interval of breaks on the y-axis.
 #' @param break.time.by Interval of breaks on the x-axis (time axis).
 #' @param ggtheme function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.
 #' @param tables.theme function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.
-#' @param axes.offset Logical value. If TRUE the space between the plot origin and the axes is removed.
+#' @param axes.offset logical value. If TRUE the space between the plot origin and the axes is removed.
 #' @inheritParams survminer::ggsurvplot
-#' @param risk.table.y.text Logical value. Default value is TRUE. If FALSE, the y axis tick labels of tables will be hidden.
-#' @param risk.table.title The title to be used for the risk table
-#' @param table.margin.left Numerical. Used to adjust the risk table horizontally.
-#' @param legend.labs Character vector specifying legend labels. Used to replace the names of the strata from the fit.
+#' @param risk.table.y.text logical value. Default value is TRUE. If FALSE, the y axis tick labels of tables will be hidden.
+#' @param risk.table.title the title to be used for the risk table
+#' @param merge logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
+#' two separate figures are generated. Default is FALSE.
+#' @param table.margin.left numerical. Used to adjust the risk table horizontally.
+#' @param plot.margin.left numerical. Used to adjust the plot horizontally.
+#' @param legend.labs character vector specifying legend labels. Used to replace the names of the strata from the fit.
 #' Should be given in the same order as those strata.
 #' @param pval.coord Coords of pvalue within plot.
 #' @seealso [ggsurvplot()]
