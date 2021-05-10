@@ -13,6 +13,7 @@
 add_median_survival <- function(data, time, status, var){
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
   surv_med <- surv_median(fit)
+  pval <- round(surv_pvalue(fit)$pval, 3)
   tbl <- data.frame(sapply(1:length(surv_med$median),function(x){
     paste(surv_med$median[x], " (", surv_med$lower[x],"-", surv_med$upper[x],")", sep = "")
   }))
@@ -23,12 +24,11 @@ add_median_survival <- function(data, time, status, var){
     paste(surv_med$median[x], " (", surv_med$lower[x],"-", surv_med$upper[x],")", sep = "")
   }))
 
-  res <-rbind(tbl, tmp)
-  rownames(res) <- c(sort(as.character(unique(data[[var]]))), "Total")
+  res <-rbind(tbl, tmp, pval)
+  rownames(res) <- c(sort(as.character(unique(data[[var]]))), "Total", "pvalue")
   colnames(res) <- "Median (95% CI)"
   return(res)
 }
-
 
 
 
