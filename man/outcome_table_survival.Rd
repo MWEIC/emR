@@ -13,6 +13,7 @@ outcome_table_survival(
   bestres = NULL,
   ORR = NULL,
   DCR = NULL,
+  statistics = TRUE,
   footnote,
   font = "calibri"
 )
@@ -33,6 +34,9 @@ outcome_table_survival(
 \item{ORR}{column containing data for over all response rate}
 
 \item{DCR}{column containing data for disease control rate}
+
+\item{statistics}{Logical value. If TRUE pvalue is printed. Default is TRUE. Default test statistics are wilcoxon (or anova if n > 2)
+for numerical data and fisher exact test for categorical data.}
 
 \item{footnote}{add footnote}
 

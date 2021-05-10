@@ -33,6 +33,7 @@ survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab 
                                risk.table = "absolute", risk.table.y.text = TRUE,risk.table.title = "No. at Risk",
                                table.margin.left = 0,plot.margin.left = 0, legend.labs = NULL, palette = "jco",pval.coord = c(0.05, 0.03),...){
 
+  data <- data[!which(is.na(var))]
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
 
   # plot survival curve

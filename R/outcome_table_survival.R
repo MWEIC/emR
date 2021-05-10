@@ -12,9 +12,11 @@
 #' @param DCR column containing data for disease control rate
 #' @param footnote add footnote
 #' @param font font style for the table
+#' @param statistics Logical value. If TRUE pvalue is printed. Default is TRUE. Default test statistics are wilcoxon (or anova if n > 2)
+#' for numerical data and fisher exact test for categorical data.
 #' @export
 
-outcome_table_survival <- function(data, time, status, surv_names, var, bestres = NULL, ORR = NULL, DCR = NULL, footnote, font = "calibri"){
+outcome_table_survival <- function(data, time, status, surv_names, var, bestres = NULL, ORR = NULL, DCR = NULL,statistics = TRUE, footnote, font = "calibri"){
 
   input <- data.frame(time = time,
                       status = status,
@@ -22,13 +24,13 @@ outcome_table_survival <- function(data, time, status, surv_names, var, bestres 
 
   tmp <- mapply(add_median_survival, time = input[,1], status = input[,2], MoreArgs = list(data = data, var = var))
   med_surv <- t(rbind.data.frame(tmp))
-  colnames(med_surv) <- c(sort(as.character(unique(data[[var]]))), "Total")
+  colnames(med_surv) <- c(sort(as.character(unique(data[[var]]))), "Total", "pvalue")
   rownames(med_surv) <- input$rownames
 
   table_data <- list()
-  if (!is.null(bestres)) table_data[["Best response"]] <- get_stats(data = data, strat = var, outcome = bestres)
-  if (!is.null(ORR)) table_data[["ORR"]] <- get_stats(data = data, strat = var, outcome = ORR)
-  if (!is.null(DCR)) table_data[["DCR"]] <- get_stats(data = data, strat = var, outcome = DCR)
+  if (!is.null(bestres)) table_data[["Best response"]] <- get_stats(data = data, strat = var, outcome = bestres, statistics = statistics)
+  if (!is.null(ORR)) table_data[["ORR"]] <- get_stats(data = data, strat = var, outcome = ORR, statistics = statistics)
+  if (!is.null(DCR)) table_data[["DCR"]] <- get_stats(data = data, strat = var, outcome = DCR, statistics = statistics)
   if (!is.null(med_surv)) table_data[["Survival"]] <- med_surv
 
   rgroup <- c()
@@ -45,7 +47,11 @@ outcome_table_survival <- function(data, time, status, surv_names, var, bestres 
 
   tmp <-sapply(colnames(output_data), gsub, pattern = "No. ", replacement = "(N = ")
   tmp <- gsub(",",".",tmp)
-  colnames(output_data) <- sapply(tmp, paste, ")", sep = "")
+  if (statistics == TRUE) {
+    colnames(output_data) <- c(sapply(tmp[-length(tmp)], paste, ")", sep = ""), "P-value")
+  } else {
+    colnames(output_data) <- sapply(tmp, paste, ")", sep = "")
+  }
 
   output_data_style <- addHtmlTableStyle(output_data, css.table = paste("font-family:",font))
   htmlTable(output_data_style, align="cccc",
