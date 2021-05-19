@@ -8,6 +8,7 @@
 #' or censoring.
 #' @param status variable specifying if event occured or data has been censored.
 #' @param vars variables tested for Influence on outcome.
+#' @param fixed.var includes fixed variables to be included in the cox model.
 #' @param modeltype character value. Allowed values include: "full" and "backwards".
 #' Specify if full model or backwards selection model should be used.
 #' @param p.thres pvalue threshold for backwards selection model.
