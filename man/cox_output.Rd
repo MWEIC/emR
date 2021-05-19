@@ -9,6 +9,7 @@ cox_output(
   time,
   status,
   vars,
+  fixed.var = NULL,
   modeltype = "full",
   p.thres = 0.1,
   niter = 10
@@ -23,6 +24,8 @@ or censoring.}
 \item{status}{variable specifying if event occured or data has been censored.}
 
 \item{vars}{variables tested for Influence on outcome.}
+
+\item{fixed.var}{includes fixed variables to be included in the cox model.}
 
 \item{modeltype}{character value. Allowed values include: "full" and "backwards".
 Specify if full model or backwards selection model should be used.}

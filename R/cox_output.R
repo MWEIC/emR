@@ -8,13 +8,14 @@
 #' or censoring.
 #' @param status variable specifying if event occured or data has been censored.
 #' @param vars variables tested for Influence on outcome.
+#' @param fixed.var includes fixed variables to be included in the cox model.
 #' @param modeltype character value. Allowed values include: "full" and "backwards".
 #' Specify if full model or backwards selection model should be used.
 #' @param p.thres pvalue threshold for backwards selection model.
 #' @param niter number of iterations for backwards selection model.
 #' @export
 
-cox_output <- function(data, time, status, vars, modeltype = "full", p.thres = 0.1, niter = 10){
+cox_output <- function(data, time, status, vars, fixed.var = NULL,  modeltype = "full", p.thres = 0.1, niter = 10){
 
   if (length(vars) > 1) {
     vars_input <- paste(vars, collapse = " + ")
@@ -31,7 +32,13 @@ cox_output <- function(data, time, status, vars, modeltype = "full", p.thres = 0
   if (length(vars) > 1) {
     if (modeltype == "backwards") {
       for (i in 1:niter){
-        ind <- rownames(res_cox$coefficients)[which(res_cox$coefficients[,5] < p.thres)]
+
+        if (!is.null(fixed.var)) {
+          ind <- rownames(res_cox$coefficients)[c(which(stringr::str_detect(rownames(res_cox$coefficients), fixed.var)), which(res_cox$coefficients[,5] < p.thres))]
+        } else {
+          ind <- rownames(res_cox$coefficients)[which(res_cox$coefficients[,5] < p.thres)]
+            }
+
         vars_backwards <- vars[!is.na(charmatch(vars,ind))]
         vars_input <- paste(vars_backwards, collapse = " + ")
 
@@ -70,6 +77,5 @@ cox_output <- function(data, time, status, vars, modeltype = "full", p.thres = 0
   }
   return(out)
 }
-
 
 
