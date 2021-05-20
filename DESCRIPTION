@@ -18,6 +18,7 @@ Imports:
     gridExtra,
     htmlTable,
     insight,
+    lubridate,
     networkD3, 
     stats,
     stringr,
