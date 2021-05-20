@@ -10,6 +10,7 @@ convert_date(x)
 \item{x}{vector containing dates.}
 }
 \description{
-Missing months are replaced by June, missing days by 15th of the month. The date format is then transferred to a yymmdd
+Missing months are replaced by June, missing days by 15th of the month. The date format is then transferred to a
+yyyymmdd
 format.
 }

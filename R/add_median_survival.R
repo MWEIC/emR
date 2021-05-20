@@ -5,12 +5,13 @@
 #' @param data data.frame or data.table containing survival data.
 #' @param time The time interval from start of observation until date of event (e.g. disease progression or death)
 #' or censoring.
+#' @param statistics Logical value. If TRUE pvalue is printed. Default is TRUE. Statistical test is log-rank test.
 #' @param status Variable specifying if event occured or data has been censored. Default behaviour inherited from the \code{surv_fit} function in the \code{survival} package, with 0
 #' indicating censored data and 1 indicating event.
 #' @param var Variable tested for Influence on outcome.
 #' @export
 
-add_median_survival <- function(data, time, status, var){
+add_median_survival <- function(data, time, status, var, statistics = TRUE){
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
   surv_med <- surv_median(fit)
   pval <- round(surv_pvalue(fit)$pval, 3)
@@ -23,13 +24,17 @@ add_median_survival <- function(data, time, status, var){
   tmp <- data.frame(sapply(1:length(surv_med$median),function(x){
     paste(surv_med$median[x], " (", surv_med$lower[x],"-", surv_med$upper[x],")", sep = "")
   }))
+  if (statistics == TRUE){
+    res <-rbind(tbl, tmp, pval)
+    rownames(res) <- c(sort(as.character(unique(data[[var]]))), "Total", "pvalue")
+  } else {
+    res <-rbind(tbl, tmp)
+    rownames(res) <- c(sort(as.character(unique(data[[var]]))), "Total")
+  }
 
-  res <-rbind(tbl, tmp, pval)
-  rownames(res) <- c(sort(as.character(unique(data[[var]]))), "Total", "pvalue")
   colnames(res) <- "Median (95% CI)"
   return(res)
 }
-
 
 
 

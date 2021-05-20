@@ -14,7 +14,7 @@ outcome_table_survival(
   ORR = NULL,
   DCR = NULL,
   statistics = TRUE,
-  footnote,
+  footnote = NULL,
   font = "calibri"
 )
 }
