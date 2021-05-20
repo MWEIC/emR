@@ -4,7 +4,7 @@
 \alias{add_median_survival}
 \title{Calculate median survival time}
 \usage{
-add_median_survival(data, time, status, var)
+add_median_survival(data, time, status, var, statistics = TRUE)
 }
 \arguments{
 \item{data}{data.frame or data.table containing survival data.}

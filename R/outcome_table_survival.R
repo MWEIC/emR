@@ -16,15 +16,19 @@
 #' for numerical data and fisher exact test for categorical data.
 #' @export
 
-outcome_table_survival <- function(data, time, status, surv_names, var, bestres = NULL, ORR = NULL, DCR = NULL,statistics = TRUE, footnote, font = "calibri"){
+outcome_table_survival <- function(data, time, status, surv_names, var, bestres = NULL, ORR = NULL, DCR = NULL,statistics = TRUE, footnote = NULL, font = "calibri"){
 
   input <- data.frame(time = time,
                       status = status,
                       rownames = surv_names)
 
-  tmp <- mapply(add_median_survival, time = input[,1], status = input[,2], MoreArgs = list(data = data, var = var))
+  tmp <- mapply(add_median_survival, time = input[,1], status = input[,2], MoreArgs = list(data = data, var = var, statistics = statistics))
   med_surv <- t(rbind.data.frame(tmp))
-  colnames(med_surv) <- c(sort(as.character(unique(data[[var]]))), "Total", "pvalue")
+  if(statistics == TRUE){
+    colnames(med_surv) <- c(sort(as.character(unique(data[[var]]))), "Total", "pvalue")
+  } else {
+    colnames(med_surv) <- c(sort(as.character(unique(data[[var]]))), "Total")
+  }
   rownames(med_surv) <- input$rownames
 
   table_data <- list()
