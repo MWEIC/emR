@@ -16,8 +16,10 @@ or censoring.}
 indicating censored data and 1 indicating event.}
 
 \item{var}{Variable tested for Influence on outcome.}
+
+\item{statistics}{Logical value. If TRUE pvalue is printed. Default is TRUE. Statistical test is log-rank test.}
 }
 \description{
-Fitting a survival fit for each subgroup defined by var. Additionally the total survival time for the
-whole sample is calculated.
+This function fits a survival curve for each subgroup defined by var and extracts the median survival times.
+Additionally the median survival time for the whole sample is calculated.
 }

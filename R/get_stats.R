@@ -1,12 +1,12 @@
 #' Get description stats for survival analysis
 #'
-#' Fitting a survival fit for each subgroup defined by var. Additionally the total survival time for the
-#' whole sample is calculated.
+#' Calculate descriptive statistics grouped by strata defined by the variable \code{strata} for
+#' different outcome variables.
 #' @param data data.frame or data.table
-#' @param strat Variable used for stratification.
-#' @param outcome Outcome variable to be summarized.
-#' @param digits The number of decimals used.
-#' @param ... Additional arguments passed on to \code{getDescriptionStatsBy} function from \code{Gmisc} package
+#' @param strat variable used for stratification.
+#' @param outcome outcome variable to be summarized.
+#' @param digits the number of decimals used.
+#' @param ... additional arguments passed on to \code{getDescriptionStatsBy} function from \code{Gmisc} package
 #' @inheritParams Gmisc::getDescriptionStatsBy
 #' @export
 
