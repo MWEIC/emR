@@ -1,16 +1,18 @@
-#' Calculate univariate cox regression and extract Hazard Ratio and pvalues
+#' Calculate cox regression and extract Hazard Ratio and pvalues
 #'
-#' This function calculates a univaraite cox regression with the \code{coxph} function of the \code{survival}
-#' package. Hazard ratios and pvalues are extracted and shown in a table format. If a variable is divided in more
-#' than 2 groups the wald test statistic for overall significance is also shown.
+#' This function calculates a univariate cox regression with the \code{coxph} function from the \code{survival}
+#' package if the argument vars is length 1; otherwise a multivariate cox regression is calculated. Hazard ratios and pvalues are extracted and shown in a table format.
+#' If a variable in univariate cox regression is divided in more than 2 groups the wald test statistic
+#' for overall significance is also shown.
 #' @param data data.frame or data.table containing survival data.
 #' @param time the time interval from start of observation until date of event (e.g. disease progression or death)
 #' or censoring.
 #' @param status variable specifying if event occured or data has been censored.
-#' @param vars variables tested for Influence on outcome.
-#' @param fixed.var includes fixed variables to be included in the cox model.
+#' @param vars variables tested for Influence on outcome. Defines type of cox regression: if length is 1 the output
+#' is a univariate cox regression, for length > 1 the output is a multivariate cox regression
+#' @param fixed.var specifies fixed variables to be included in the cox model.
 #' @param modeltype character value. Allowed values include: "full" and "backwards".
-#' Specify if full model or backwards selection model should be used.
+#' Specify if full model or backwards selection model should be used for multivariate cox regression.
 #' @param p.thres pvalue threshold for backwards selection model.
 #' @param niter number of iterations for backwards selection model.
 #' @export
