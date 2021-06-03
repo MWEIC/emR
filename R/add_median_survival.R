@@ -1,7 +1,12 @@
 #' Calculate median survival time
 #'
+
 #' Fitting a survival fit for each subgroup defined by var and extracting median survival times.
 #' Additionally the total survival time for the whole sample is calculated.
+
+#' This function fits a survival curve for each subgroup defined by var and extracts the median survival times.
+#' Additionally the median survival time for the whole sample is calculated.
+
 #' @param data data.frame or data.table containing survival data.
 #' @param time The time interval from start of observation until date of event (e.g. disease progression or death)
 #' or censoring.

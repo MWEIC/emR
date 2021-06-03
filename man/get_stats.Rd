@@ -22,11 +22,11 @@ get_stats(
 \arguments{
 \item{data}{data.frame or data.table}
 
-\item{strat}{Variable used for stratification.}
+\item{strat}{variable used for stratification.}
 
-\item{outcome}{Outcome variable to be summarized.}
+\item{outcome}{outcome variable to be summarized.}
 
-\item{digits}{The number of decimals used.}
+\item{digits}{the number of decimals used.}
 
 \item{add_total_col}{This adds a total column to the resulting table.
 You can also specify if you want the total column "first" or "last"
@@ -58,9 +58,9 @@ specifically use the \code{\link[base]{sprintf}} formatting, e.g. "No. \%s patie
 \item{continuous_fn}{The method to describe continuous variables. The
 default is \code{\link[Gmisc]{describeMean}}.}
 
-\item{...}{Additional arguments passed on to \code{getDescriptionStatsBy} function from \code{Gmisc} package}
+\item{...}{additional arguments passed on to \code{getDescriptionStatsBy} function from \code{Gmisc} package}
 }
 \description{
-Fitting a survival fit for each subgroup defined by var. Additionally the total survival time for the
-whole sample is calculated.
+Calculate descriptive statistics grouped by strata defined by the variable \code{strata} for
+different outcome variables.
 }
