@@ -71,8 +71,12 @@ cox_output <- function(data, time, status, vars, fixed.var = NULL,  modeltype = 
 
   out <- data.frame(HR = HR, p = as.character(pval.coef))
   if (length(vars) == 1){
-    out <- rbind(c(NA,as.character(pval.wald)), out)
-    rownames(out) <- c(vars, names)
+    if (!is.numeric(data[[vars]])){
+      out <- rbind(c(NA,as.character(pval.wald)), out)
+      rownames(out) <- c(vars, names)
+    }  else {
+      rownames(out) <- names
+    }
   } else {
     rownames(out) <- names
   }
