@@ -10,22 +10,21 @@ survplot_eumelareg(
   status = "status",
   var,
   xlab = "Time in months",
-  ylab = "Probability of Overall Survival",
+  ylab = "Probability of Survival",
   pval = TRUE,
   break.y.by = 0.1,
   break.time.by = 3,
   ggtheme = theme_eumelareg_surv_plot(),
   merge = FALSE,
   tables.theme = theme_eumelareg_surv_table(),
-  axes.offset = TRUE,
-  risk.table = "absolute",
-  risk.table.y.text = TRUE,
-  risk.table.title = "No. at Risk",
-  table.margin.left = 0,
-  plot.margin.left = 0,
+  risk.table.width = 0.9,
+  plot.width = 0.838,
+  axes.offset = FALSE,
+  risk.table.title = "No. at risk",
+  plot.margin.left = 20,
   legend.labs = NULL,
   palette = "jco",
-  pval.coord = c(0.05, 0.03),
+  pval.coord = c(1, 0.1),
   ...
 )
 }
@@ -59,21 +58,13 @@ two separate figures are generated. Default is FALSE.}
 
 \item{tables.theme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
 
+\item{risk.table.width}{relative width of the risk table.}
+
+\item{plot.width}{relative width of the survival plot}
+
 \item{axes.offset}{logical value. If TRUE the space between the plot origin and the axes is removed.}
 
-\item{risk.table}{Allowed values include: \itemize{ \item TRUE or FALSE
-specifying whether to show or not the risk table. Default is FALSE. \item
-"absolute" or "percentage". Shows the \bold{absolute number} and the
-\bold{percentage} of subjects at risk by time, respectively. \item "abs_pct"
-to show both absolute number and percentage. \item "nrisk_cumcensor" and
-"nrisk_cumevents". Show the number at risk and, the cumulative number of
-censoring and events, respectively. }}
-
-\item{risk.table.y.text}{logical value. Default value is TRUE. If FALSE, the y axis tick labels of tables will be hidden.}
-
 \item{risk.table.title}{the title to be used for the risk table}
-
-\item{table.margin.left}{numerical. Used to adjust the risk table horizontally.}
 
 \item{plot.margin.left}{numerical. Used to adjust the plot horizontally.}
 

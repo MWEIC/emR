@@ -14,11 +14,11 @@
 #' @param tables.theme function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.
 #' @param axes.offset logical value. If TRUE the space between the plot origin and the axes is removed.
 #' @inheritParams survminer::ggsurvplot
-#' @param risk.table.y.text logical value. Default value is TRUE. If FALSE, the y axis tick labels of tables will be hidden.
 #' @param risk.table.title the title to be used for the risk table
 #' @param merge logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
 #' two separate figures are generated. Default is FALSE.
-#' @param table.margin.left numerical. Used to adjust the risk table horizontally.
+#' @param risk.table.width relative width of the risk table.
+#' @param plot.width relative width of the survival plot
 #' @param plot.margin.left numerical. Used to adjust the plot horizontally.
 #' @param legend.labs character vector specifying legend labels. Used to replace the names of the strata from the fit.
 #' Should be given in the same order as those strata.
@@ -26,56 +26,61 @@
 #' @seealso [ggsurvplot()]
 #' @export
 
-survplot_eumelareg <- function(data,time = "time", status = "status", var, xlab = "Time in months",
-                               ylab = "Probability of Overall Survival",pval = TRUE, break.y.by = 0.1,
-                               break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(), merge = FALSE,
-                               tables.theme = theme_eumelareg_surv_table(), axes.offset = TRUE,
-                               risk.table = "absolute", risk.table.y.text = TRUE,risk.table.title = "No. at Risk",
-                               table.margin.left = 0,plot.margin.left = 0, legend.labs = NULL, palette = "jco",pval.coord = c(0.05, 0.03),...){
-
+survplot_eumelareg <- function (data, time = "time", status = "status",
+                           var, xlab = "Time in months", ylab = "Probability of Survival",
+                           pval = TRUE, break.y.by = 0.1, break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(),
+                           merge = FALSE, tables.theme = theme_eumelareg_surv_table(),
+                           risk.table.width = 0.9, plot.width = 0.838,
+                           axes.offset = FALSE,  risk.table.title = "No. at risk",
+                           plot.margin.left = 20, legend.labs = NULL, palette = "jco",
+                           pval.coord = c(1, 0.1), ...)
+{
   data <- data[!which(is.na(var))]
-  fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
+  fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~
+                    eval(parse(text = var)), data = data)
 
-  # plot survival curve
-  ggsurv <- ggsurvplot(fit,data = data, xlab = xlab,  ylab = ylab, pval = pval, xlim = c(0,max(data[[time]], na.rm = T)+1),
-                       break.y.by = break.y.by, break.time.by = break.time.by, ggtheme = ggtheme,
-                       tables.theme = tables.theme, axes.offset = axes.offset, risk.table = risk.table,
-                       risk.table.y.text = risk.table.y.text, risk.table.title = risk.table.title,
-                       legend.labs =  legend.labs, palette =  palette,pval.coord = pval.coord,...)
+  # draw Kaplan-Meier plot
+  ggsurv <- ggsurvplot(fit, data = data, xlab = xlab, ylab = ylab,
+                       pval = pval, xlim = c(0, max(data[[time]], na.rm = T) +
+                                               1), break.y.by = break.y.by, break.time.by = break.time.by,
+                       ggtheme = ggtheme, tables.theme = tables.theme, axes.offset = axes.offset,
+                       legend.labs = legend.labs, palette = palette, pval.coord = pval.coord, ...)
+  ggsurv$plot <- ggsurv$plot + theme(plot.margin = unit(c(5.5, 5.5, 5.5, plot.margin.left), "points"))
 
-  # adjust position of risk table
-  ggsurv$table <- ggsurv$table +
-    theme(plot.margin = unit(c(5.5, 5.5, 5.5, table.margin.left), "points"))
+  # draw risk table
+  risk_table <- ggrisktable(fit, data = data, risk.table.title = risk.table.title, break.time.by = break.time.by,
+                            legend.labs =  legend.labs, ...) +
+    theme(axis.line.y = element_blank(), axis.title.y = element_blank(), axis.ticks.y = element_blank(),
+          axis.line.x = element_blank(),axis.text.x = element_blank(), axis.title.x = element_blank(),
+          axis.ticks.x = element_blank(), plot.title = element_text(face = "bold"))
 
-  ggsurv$plot <- ggsurv$plot +
-    theme(plot.margin = unit(c(5.5, 5.5, 5.5, plot.margin.left), "points"))
-
-  # define table with Median survival (displayed on the right of the figure)
+  # add table with median survival
   surv_med <- surv_median(fit)
-
-  tbl <- as.data.frame(table(data[!is.na(eval(parse(text =time))),eval(parse(text =var))]))
-  tbl$median <- sapply(1:length(surv_med$median),function(x){
-    paste(surv_med$median[x], " (", surv_med$lower[x],"-", surv_med$upper[x],")", sep = "")
+  tbl <- as.data.frame(table(data[!is.na(eval(parse(text = time))),
+                                  eval(parse(text = var))]))
+  tbl$median <- sapply(1:length(surv_med$median), function(x) {
+    paste(surv_med$median[x], " (", surv_med$lower[x],
+          "-", surv_med$upper[x], ")", sep = "")
   })
   rownames(tbl) <- tbl$Var1
   tbl$Var1 <- NULL
   colnames(tbl) <- c("No. of patients", "Median  (95% CI)")
   tblGrob <- gridExtra::tableGrob(tbl, theme = gridExtra::ttheme_minimal())
-
-  # add blank plot for arranging
-  blankPlot <- ggplot()+geom_blank(aes(1,1))+
-    theme(plot.background = element_blank(), panel.grid.major = element_blank(),  panel.grid.minor = element_blank(),
-          panel.border = element_blank(), panel.background = element_blank(), axis.title.x = element_blank(),
-          axis.title.y = element_blank(), axis.text.x = element_blank(),  axis.text.y = element_blank(),
-          axis.ticks = element_blank(), axis.line = element_blank()
-    )
-
-  # arrange plot, table and text
-  p1 <- ggpubr::ggarrange(ggsurv$plot, ggsurv$table, ncol = 1, heights = c(3,1))
-  p2 <- ggpubr::ggarrange(tblGrob,blankPlot,  nrow = 2)
+  blankPlot <- ggplot() + geom_blank(aes(1, 1)) + theme(plot.background = element_blank(),
+                                                        panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                                                        panel.border = element_blank(), panel.background = element_blank(),
+                                                        axis.title.x = element_blank(), axis.title.y = element_blank(),
+                                                        axis.text.x = element_blank(), axis.text.y = element_blank(),
+                                                        axis.ticks = element_blank(), axis.line = element_blank())
+  # combine plots
+  p1 <- cowplot::ggdraw() +
+    cowplot::draw_plot(ggsurv$plot, x = 0.04, y = .3, width = plot.width, height = .7) +
+    cowplot::draw_plot(risk_table, x = 0, y = 0, width = risk.table.width, height = .3)
+  p2 <- ggpubr::ggarrange(tblGrob, blankPlot, nrow = 2)
   if (merge == TRUE) {
-    ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2,1))
-  } else {
+    ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2, 1))
+  }
+  else {
     list(plot = p1, table = ggpubr::ggarrange(tblGrob))
   }
 }
