@@ -16,18 +16,18 @@
 #' @param var Variable tested for Influence on outcome.
 #' @export
 
-add_median_survival <- function(data, time, status, var, statistics = TRUE){
+add_median_survival <- function(data, time, status, var, round = 1, statistics = TRUE){
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
   surv_med <- surv_median(fit)
   pval <- round(surv_pvalue(fit)$pval, 3)
   tbl <- data.frame(sapply(1:length(surv_med$median),function(x){
-    paste(surv_med$median[x], " (", surv_med$lower[x],"-", surv_med$upper[x],")", sep = "")
+    paste(round(surv_med$median[x],round), " (", round(surv_med$lower[x],round),"-", round(surv_med$upper[x],round),")", sep = "")
   }))
 
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ 1, data = data)
   surv_med <- surv_median(fit)
   tmp <- data.frame(sapply(1:length(surv_med$median),function(x){
-    paste(surv_med$median[x], " (", surv_med$lower[x],"-", surv_med$upper[x],")", sep = "")
+    paste(round(surv_med$median[x],round), " (", round(surv_med$lower[x],round),"-", round(surv_med$upper[x],round),")", sep = "")
   }))
   if (statistics == TRUE){
     res <-rbind(tbl, tmp, pval)
@@ -40,7 +40,4 @@ add_median_survival <- function(data, time, status, var, statistics = TRUE){
   colnames(res) <- "Median (95% CI)"
   return(res)
 }
-
-
-
 

@@ -74,8 +74,8 @@ survplot_eumelareg <- function (data, time = "time", status = "status",
                                                         axis.ticks = element_blank(), axis.line = element_blank())
   # combine plots
   p1 <- cowplot::ggdraw() +
-    cowplot::draw_plot(ggsurv$plot, x = 0.04, y = .3, width = plot.width, height = .7) +
-    cowplot::draw_plot(risk_table, x = 0, y = 0, width = risk.table.width, height = .3)
+    cowplot::draw_plot(ggsurv$plot, x = 0.04, y = .25, width = plot.width, height = .75) +
+    cowplot::draw_plot(risk_table, x = 0, y = 0, width = risk.table.width, height = .25)
   p2 <- ggpubr::ggarrange(tblGrob, blankPlot, nrow = 2)
   if (merge == TRUE) {
     ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2, 1))
