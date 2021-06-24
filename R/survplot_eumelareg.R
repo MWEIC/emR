@@ -27,34 +27,30 @@
 #' @export
 
 survplot_eumelareg <- function (data, time = "time", status = "status",
-                           var, xlab = "Time in months", ylab = "Probability of Survival",
-                           pval = TRUE, break.y.by = 0.1, break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(),
-                           merge = FALSE, tables.theme = theme_eumelareg_surv_table(),
-                           risk.table.width = 0.9, plot.width = 0.838,
-                           axes.offset = FALSE,  risk.table.title = "No. at risk",
-                           plot.margin.left = 20, legend.labs = NULL, palette = "jco",
-                           pval.coord = c(1, 0.1), ...)
+          var, xlab = "Time in months", ylab = "Probability of Survival",
+          pval = TRUE, break.y.by = 0.1, break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(),
+          merge = FALSE, tables.theme = theme_eumelareg_surv_table(), xlim = NULL,
+          risk.table.width = 0.9, plot.width = 0.838, axes.offset = FALSE,
+          risk.table.title = "No. at risk", plot.margin.left = 20,
+          legend.labs = NULL, palette = "jco", pval.coord = c(1,0.1), ...)
 {
   data <- data[!which(is.na(var))]
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~
                     eval(parse(text = var)), data = data)
 
-  # draw Kaplan-Meier plot
-  ggsurv <- ggsurvplot(fit, data = data, xlab = xlab, ylab = ylab,
-                       pval = pval, xlim = c(0, max(data[[time]], na.rm = T) +
-                                               1), break.y.by = break.y.by, break.time.by = break.time.by,
+    ggsurv <- ggsurvplot(fit, data = data, xlab = xlab, ylab = ylab,
+                       pval = pval, xlim = xlim, break.y.by = break.y.by, break.time.by = break.time.by,
                        ggtheme = ggtheme, tables.theme = tables.theme, axes.offset = axes.offset,
-                       legend.labs = legend.labs, palette = palette, pval.coord = pval.coord, ...)
-  ggsurv$plot <- ggsurv$plot + theme(plot.margin = unit(c(5.5, 5.5, 5.5, plot.margin.left), "points"))
-
-  # draw risk table
-  risk_table <- ggrisktable(fit, data = data, risk.table.title = risk.table.title, break.time.by = break.time.by,
-                            legend.labs =  legend.labs, ...) +
-    theme(axis.line.y = element_blank(), axis.title.y = element_blank(), axis.ticks.y = element_blank(),
-          axis.line.x = element_blank(),axis.text.x = element_blank(), axis.title.x = element_blank(),
-          axis.ticks.x = element_blank(), plot.title = element_text(face = "bold"))
-
-  # add table with median survival
+                       legend.labs = legend.labs, palette = palette, pval.coord = pval.coord,
+                       ...)
+  ggsurv$plot <- ggsurv$plot + theme(plot.margin = unit(c(5.5,
+                                                          5.5, 5.5, plot.margin.left), "points"))
+  risk_table <- ggrisktable(fit, data = data, risk.table.title = risk.table.title, xlim = xlim,
+                            break.time.by = break.time.by, legend.labs = legend.labs,
+                            ...) + theme(axis.line.y = element_blank(), axis.title.y = element_blank(),
+                                         axis.ticks.y = element_blank(), axis.line.x = element_blank(),
+                                         axis.text.x = element_blank(), axis.title.x = element_blank(),
+                                         axis.ticks.x = element_blank(), plot.title = element_text(face = "bold"))
   surv_med <- surv_median(fit)
   tbl <- as.data.frame(table(data[!is.na(eval(parse(text = time))),
                                   eval(parse(text = var))]))
@@ -72,10 +68,10 @@ survplot_eumelareg <- function (data, time = "time", status = "status",
                                                         axis.title.x = element_blank(), axis.title.y = element_blank(),
                                                         axis.text.x = element_blank(), axis.text.y = element_blank(),
                                                         axis.ticks = element_blank(), axis.line = element_blank())
-  # combine plots
-  p1 <- cowplot::ggdraw() +
-    cowplot::draw_plot(ggsurv$plot, x = 0.04, y = .25, width = plot.width, height = .75) +
-    cowplot::draw_plot(risk_table, x = 0, y = 0, width = risk.table.width, height = .25)
+  p1 <- cowplot::ggdraw() + cowplot::draw_plot(ggsurv$plot,
+                                               x = 0.04, y = 0.3, width = plot.width, height = 0.7) +
+    cowplot::draw_plot(risk_table, x = 0, y = 0, width = risk.table.width,
+                       height = 0.3)
   p2 <- ggpubr::ggarrange(tblGrob, blankPlot, nrow = 2)
   if (merge == TRUE) {
     ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2, 1))
@@ -84,6 +80,4 @@ survplot_eumelareg <- function (data, time = "time", status = "status",
     list(plot = p1, table = ggpubr::ggarrange(tblGrob))
   }
 }
-
-
 

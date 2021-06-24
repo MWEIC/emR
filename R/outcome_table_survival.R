@@ -13,10 +13,12 @@
 #' @param footnote add footnote
 #' @param font font style for the table
 #' @param statistics Logical value. If TRUE pvalue is printed. Default is TRUE. Default test statistics are wilcoxon (or anova if n > 2)
+#' @param ... add additional css styling arguments to addHtmlTableStyle from the \code{htmlTable} package
 #' for numerical data and fisher exact test for categorical data.
 #' @export
 
-outcome_table_survival <- function(data, time, status, surv_names, var, bestres = NULL, ORR = NULL, DCR = NULL,statistics = TRUE, footnote = NULL, font = "calibri"){
+outcome_table_survival <- function(data, time, status, surv_names, var, bestres = NULL,
+                                   ORR = NULL, DCR = NULL,statistics = TRUE, footnote = NULL, font = "calibri", ...){
 
   input <- data.frame(time = time,
                       status = status,
@@ -57,13 +59,14 @@ outcome_table_survival <- function(data, time, status, surv_names, var, bestres 
     colnames(output_data) <- sapply(tmp, paste, ")", sep = "")
   }
 
-  output_data_style <- addHtmlTableStyle(output_data, css.table = paste("font-family:",font))
+  output_data_style <- addHtmlTableStyle(output_data, ...)
   htmlTable(output_data_style, align="cccc",
             rgroup=rgroup, n.rgroup=n.rgroup,
             rgroupCSSseparator="",
             rowlabel="",
             tfoot=footnote,
-            ctable=TRUE)
+            ctable= TRUE
+            )
 }
 
 
