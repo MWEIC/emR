@@ -14,6 +14,7 @@
 #' @param status Variable specifying if event occured or data has been censored. Default behaviour inherited from the \code{surv_fit} function in the \code{survival} package, with 0
 #' indicating censored data and 1 indicating event.
 #' @param var Variable tested for Influence on outcome.
+#' @param round rounds the results to the specified number of decimal places (default 1)
 #' @export
 
 add_median_survival <- function(data, time, status, var, round = 1, statistics = TRUE){

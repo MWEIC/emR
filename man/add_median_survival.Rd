@@ -4,7 +4,7 @@
 \alias{add_median_survival}
 \title{Calculate median survival time}
 \usage{
-add_median_survival(data, time, status, var, statistics = TRUE)
+add_median_survival(data, time, status, var, round = 1, statistics = TRUE)
 }
 \arguments{
 \item{data}{data.frame or data.table containing survival data.}
@@ -16,6 +16,8 @@ or censoring.}
 indicating censored data and 1 indicating event.}
 
 \item{var}{Variable tested for Influence on outcome.}
+
+\item{round}{rounds the results to the specified number of decimal places (default 1)}
 
 \item{statistics}{Logical value. If TRUE pvalue is printed. Default is TRUE. Statistical test is log-rank test.}
 }
