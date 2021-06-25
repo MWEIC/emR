@@ -6,6 +6,7 @@
 #' or censoring.
 #' @param status variable specifying if event occured or data has been censored.
 #' @param var variable tested for Influence on outcome.
+#' @param xlim x axis limit.
 #' @param xlab X-axis label.
 #' @param ylab y-axis label.
 #' @param break.y.by interval of breaks on the y-axis.

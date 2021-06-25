@@ -59,6 +59,8 @@ two separate figures are generated. Default is FALSE.}
 
 \item{tables.theme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
 
+\item{xlim}{x axis limit.}
+
 \item{risk.table.width}{relative width of the risk table.}
 
 \item{plot.width}{relative width of the survival plot}
