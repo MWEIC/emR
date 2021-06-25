@@ -9,6 +9,7 @@ cox_table(
   time,
   status,
   vars,
+  rgroup = NULL,
   footnote = NULL,
   printHTML = TRUE,
   univariate = TRUE,
@@ -24,6 +25,8 @@ or censoring.}
 \item{status}{variable specifying if event occured or data has been censored.}
 
 \item{vars}{one or more variables defined as character strings to be included in the table}
+
+\item{rgroup}{a vector of character strings containing headings for row groups.}
 
 \item{footnote}{character string passed on to \code{tfoot} argument of \code{htmlTable}}
 

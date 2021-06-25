@@ -7,6 +7,7 @@
 #' or censoring.
 #' @param status variable specifying if event occured or data has been censored.
 #' @param vars one or more variables defined as character strings to be included in the table
+#' @param rgroup a vector of character strings containing headings for row groups.
 #' @param footnote character string passed on to \code{tfoot} argument of \code{htmlTable}
 #' @param printHTML Logical value. If TRUE output is printed as htmlTable. Default is TRUE.
 #' @param univariate Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate
@@ -42,6 +43,11 @@ cox_table <- function(data, time, status, vars, rgroup = NULL, footnote = NULL,
   if (printHTML == TRUE){
     htmlTable::htmlTable(out, tfoot = footnote, rgroup = rgroup, n.rgroup = n.rgroup)
   } else{
-    return(out)
+    list(res = out, rgroup = rgroup, n.group = n.rgroup)
   }
 }
+
+
+
+
+

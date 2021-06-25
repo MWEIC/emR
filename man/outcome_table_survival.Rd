@@ -15,7 +15,8 @@ outcome_table_survival(
   DCR = NULL,
   statistics = TRUE,
   footnote = NULL,
-  font = "calibri"
+  font = "calibri",
+  ...
 )
 }
 \arguments{
@@ -35,12 +36,14 @@ outcome_table_survival(
 
 \item{DCR}{column containing data for disease control rate}
 
-\item{statistics}{Logical value. If TRUE pvalue is printed. Default is TRUE. Default test statistics are wilcoxon (or anova if n > 2)
-for numerical data and fisher exact test for categorical data.}
+\item{statistics}{Logical value. If TRUE pvalue is printed. Default is TRUE. Default test statistics are wilcoxon (or anova if n > 2)}
 
 \item{footnote}{add footnote}
 
 \item{font}{font style for the table}
+
+\item{...}{add additional css styling arguments to addHtmlTableStyle from the \code{htmlTable} package
+for numerical data and fisher exact test for categorical data.}
 }
 \description{
 Wrapper around \code{add_median_survival} to transform the data to htmltable format in order to be used in display
