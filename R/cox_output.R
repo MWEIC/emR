@@ -76,11 +76,6 @@ cox_output <- function(data, time, status, vars, fixed.var = NULL,  modeltype = 
   }
   colnames(out) <- c("HR (95% CI)", "pvalue")
 
-  if (length(vars) > 1) {
-    message("Conducting multivariate cox regression")
-  } else {
-    message("Conducting univariate cox regression")
-  }
   return(out)
 }
 

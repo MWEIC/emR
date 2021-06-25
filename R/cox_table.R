@@ -14,17 +14,34 @@
 #' @param ... additional arguments to be passed on to \code{cox_output}
 #' @export
 
-cox_table <- function(data, time, status, vars, footnote = NULL, printHTML = TRUE, univariate = TRUE,...){
-  if (univariate == TRUE) {
-    tmp <- lapply(vars, cox_output, data = data, time = time, status = status, ...)
-    tmp <- dplyr::bind_rows(tmp)
-  } else {
-    tmp <- cox_output(data = data, time = time, status = status, vars = vars,...)
+cox_table <- function(data, time, status, vars, rgroup = NULL, footnote = NULL,
+                      printHTML = TRUE, univariate = TRUE,...){
+
+  if(is.null(rgroup)){
+    rgroup <- vars
   }
-  rownames(tmp) <- gsub(">=", "&#8805", rownames(tmp))
+
+  n <- length(vars)
+  tmp <- lapply(vars, cox_output, data = data, time = time, status = status,...)
+  res <- lapply(1:n, function(x){tmp[[x]][-1,]})
+  out <- dplyr::bind_rows(res)
+  n.rgroup <- unlist(lapply(1:n, function(x) dim(res[[x]])[1]))
+  pvals <- unlist(lapply(1:n, function(x){tmp[[x]][1,]$pvalue}))
+
+  # set attribute argument of rgroup to add global pvalues to the end of the column (wald-test)
+  attr_pval <- sapply(1:n, function(x){list(pvals[x])})
+  names(attr_pval) <- 1:n
+  attr(rgroup, "add") <- attr_pval
+
+  if (univariate == FALSE){
+    out <- cox_output(data = data, time = time, status = status, vars = vars,...)
+    attr(rgroup, "add") <- NULL
+  }
+
+  rownames(out) <- gsub(">=", "&#8805", rownames(out))
   if (printHTML == TRUE){
-    htmlTable::htmlTable(tmp, tfoot = footnote)
+    htmlTable::htmlTable(out, tfoot = footnote, rgroup = rgroup, n.rgroup = n.rgroup)
   } else{
-    return(tmp)
+    return(out)
   }
 }
