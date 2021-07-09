@@ -30,7 +30,7 @@
 survplot_eumelareg <- function (data, time = "time", status = "status",
           var, xlab = "Time in months", ylab = "Probability of Survival",
           pval = TRUE, break.y.by = 0.1, break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(),
-          merge = FALSE, tables.theme = theme_eumelareg_surv_table(), xlim = NULL,
+          merge = FALSE, tables.theme = theme_eumelareg_surv_table(), xlim = c(0, 48),
           risk.table.width = 0.92, plot.width = 0.838, axes.offset = FALSE,
           risk.table.title = "No. at risk", plot.margin.left = 20,
           legend.labs = NULL, palette = "jco", pval.coord = c(1,0.1), ...)
