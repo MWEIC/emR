@@ -31,11 +31,15 @@ survplot_eumelareg <- function (data, time = "time", status = "status",
           var, xlab = "Time in months", ylab = "Probability of Survival",
           pval = TRUE, break.y.by = 0.1, break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(),
           merge = FALSE, tables.theme = theme_eumelareg_surv_table(), xlim = NULL,
-          risk.table.width = 0.9, plot.width = 0.838, axes.offset = FALSE,
+          risk.table.width = 0.92, plot.width = 0.838, axes.offset = FALSE,
           risk.table.title = "No. at risk", plot.margin.left = 20,
           legend.labs = NULL, palette = "jco", pval.coord = c(1,0.1), ...)
 {
   data <- data[!which(is.na(var))]
+  if (is.null(legend.labs)) {
+    legend.labs <- sort(unique(data[[var]]))
+  }
+
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~
                     eval(parse(text = var)), data = data)
 

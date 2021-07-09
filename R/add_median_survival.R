@@ -12,10 +12,11 @@
 #' @param round rounds the results to the specified number of decimal places (default 1)
 #' @export
 
+
 add_median_survival <- function(data, time, status, var, round = 1, statistics = TRUE){
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
   surv_med <- surv_median(fit)
-  pval <- round(surv_pvalue(fit)$pval, 3)
+  pval <- ifelse(surv_pvalue(fit)$pval < 0.0001, "< 0.0001", round(surv_pvalue(fit)$pval, 3))
   tbl <- data.frame(sapply(1:length(surv_med$median),function(x){
     paste(round(surv_med$median[x],round), " (", round(surv_med$lower[x],round),"-", round(surv_med$upper[x],round),")", sep = "")
   }))
