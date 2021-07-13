@@ -21,9 +21,10 @@
 #' Specify if full model or backwards selection model should be used for multivariate cox regression.
 #' @param p.thres pvalue threshold for backwards selection model.
 #' @param niter number of iterations for backwards selection model.
+#' @param output Defines the output object of the function.  Default is \"table\". Another possible option is \"fit\" to return a coxph object.
 #' @export
 
-cox_output <- function(data, time, status, vars, fixed.var = NULL,  modeltype = "full", p.thres = 0.1, niter = 10){
+cox_output <- function(data, time, status, vars, fixed.var = NULL, output = "table",  modeltype = "full", p.thres = 0.1, niter = 10){
 
   if (length(vars) > 1) {
     vars_input <- paste(vars, collapse = " + ")
@@ -82,7 +83,14 @@ cox_output <- function(data, time, status, vars, fixed.var = NULL,  modeltype = 
   }
   colnames(out) <- c("HR (95% CI)", "pvalue")
 
-  return(out)
+  if (output == "table") {
+    return(out)
+  } else if (output == "fit") {
+    return(fit_cox)
+  } else {
+    stop("Please specify output. Allowed values include \"table\" to output a dataframe and \"fit\" to return a coxph object")
+  }
+
 }
 
 
