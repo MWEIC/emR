@@ -15,11 +15,13 @@
 #' @param tables.theme function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.
 #' @param axes.offset logical value. If TRUE the space between the plot origin and the axes is removed.
 #' @inheritParams survminer::ggsurvplot
+#' @param legend.position he position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector)
 #' @param risk.table.title the title to be used for the risk table
 #' @param merge logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
 #' two separate figures are generated. Default is FALSE.
 #' @param risk.table.width relative width of the risk table.
 #' @param plot.width relative width of the survival plot
+#' @param plot.height relative height of the survival plot. The risk table is adjusted accordingly.
 #' @param plot.margin.left numerical. Used to adjust the plot horizontally.
 #' @param legend.labs character vector specifying legend labels. Used to replace the names of the strata from the fit.
 #' Should be given in the same order as those strata.
@@ -30,8 +32,8 @@
 survplot_eumelareg <- function (data, time = "time", status = "status",
           var, xlab = "Time in months", ylab = "Probability of Survival",
           pval = TRUE, break.y.by = 0.1, break.time.by = 3, ggtheme = theme_eumelareg_surv_plot(),
-          merge = FALSE, tables.theme = theme_eumelareg_surv_table(), xlim = c(0, 48),
-          risk.table.width = 0.92, plot.width = 0.838, axes.offset = FALSE,
+          merge = FALSE, tables.theme = theme_eumelareg_surv_table(), xlim = c(0, 48), legend.position = "top",
+          risk.table.width = 0.92, plot.width = 0.838, plot.height = 0.7, axes.offset = FALSE,
           risk.table.title = "No. at risk", plot.margin.left = 20,
           legend.labs = NULL, palette = "jco", pval.coord = c(1,0.1), ...)
 {
@@ -39,6 +41,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status",
   if (is.null(legend.labs)) {
     legend.labs <- sort(unique(data[[var]]))
   }
+  legend.labs.risk.table <- gsub(">", "&gt;", legend.labs)
 
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~
                     eval(parse(text = var)), data = data)
@@ -48,10 +51,10 @@ survplot_eumelareg <- function (data, time = "time", status = "status",
                        ggtheme = ggtheme, tables.theme = tables.theme, axes.offset = axes.offset,
                        legend.labs = legend.labs, palette = palette, pval.coord = pval.coord,
                        ...)
-  ggsurv$plot <- ggsurv$plot + theme(plot.margin = unit(c(5.5,
-                                                          5.5, 5.5, plot.margin.left), "points"))
+  ggsurv$plot <- ggsurv$plot + theme(legend.position = legend.position,
+                                     plot.margin = unit(c(5.5, 5.5, 5.5, plot.margin.left), "points"))
   risk_table <- ggrisktable(fit, data = data, risk.table.title = risk.table.title, xlim = xlim,
-                            break.time.by = break.time.by, legend.labs = legend.labs,
+                            break.time.by = break.time.by, legend.labs = legend.labs.risk.table,
                             ...) + theme(axis.line.y = element_blank(), axis.title.y = element_blank(),
                                          axis.ticks.y = element_blank(), axis.line.x = element_blank(),
                                          axis.text.x = element_blank(), axis.title.x = element_blank(),
@@ -74,9 +77,9 @@ survplot_eumelareg <- function (data, time = "time", status = "status",
                                                         axis.text.x = element_blank(), axis.text.y = element_blank(),
                                                         axis.ticks = element_blank(), axis.line = element_blank())
   p1 <- cowplot::ggdraw() + cowplot::draw_plot(ggsurv$plot,
-                                               x = 0.04, y = 0.3, width = plot.width, height = 0.7) +
+                                               x = 0.04, y = 1 - plot.height, width = plot.width, height = plot.height) +
     cowplot::draw_plot(risk_table, x = 0, y = 0, width = risk.table.width,
-                       height = 0.3)
+                       height = 1 - plot.height)
   p2 <- ggpubr::ggarrange(tblGrob, blankPlot, nrow = 2)
   if (merge == TRUE) {
     ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2, 1))
