@@ -18,8 +18,10 @@ survplot_eumelareg(
   merge = FALSE,
   tables.theme = theme_eumelareg_surv_table(),
   xlim = c(0, 48),
+  legend.position = "top",
   risk.table.width = 0.92,
   plot.width = 0.838,
+  plot.height = 0.7,
   axes.offset = FALSE,
   risk.table.title = "No. at risk",
   plot.margin.left = 20,
@@ -61,9 +63,13 @@ two separate figures are generated. Default is FALSE.}
 
 \item{xlim}{x axis limit.}
 
+\item{legend.position}{he position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector)}
+
 \item{risk.table.width}{relative width of the risk table.}
 
 \item{plot.width}{relative width of the survival plot}
+
+\item{plot.height}{relative height of the survival plot. The risk table is adjusted accordingly.}
 
 \item{axes.offset}{logical value. If TRUE the space between the plot origin and the axes is removed.}
 
