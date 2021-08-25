@@ -70,9 +70,17 @@ or censoring.}
 
 \item{plot.margin.left}{numerical. Used to adjust the plot horizontally.}
 
+\item{plot.axes.text.size}{text size of x-axis and y-axis text.}
+
+\item{plot.axes.title.size}{text size of x-axis and y-axis titles.}
+
 \item{risk.table.width}{relative width of the risk table.}
 
 \item{risk.table.title}{the title to be used for the risk table. Default is no title.}
+
+\item{risk.table.title.size}{size of risk table title.}
+
+\item{risk.table.text.size}{size of risk table text.}
 
 \item{legend.position}{he position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector)}
 
@@ -88,7 +96,9 @@ p-value is added on the plot. If numeric, than the computet p-value is
 substituted with the one passed with this parameter. If character, then the
 customized string appears on the plot. See examples - Example 3.}
 
-\item{pval.coord}{Coords of pvalue within plot.}
+\item{pval.coord}{coords of pvalue within plot.}
+
+\item{pval.size}{size of pvalue within plot}
 
 \item{merge}{logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
 two separate figures are generated. Default is FALSE.}

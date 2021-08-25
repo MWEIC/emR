@@ -16,20 +16,26 @@
 #' @param axes.offset logical value. If TRUE the space between the plot origin and the axes is removed.
 #' @inheritParams survminer::ggsurvplot
 #' @param risk.table.title the title to be used for the risk table. Default is no title.
+#' @param risk.table.title.size size of risk table title.
+#' @param risk.table.text.size size of risk table text.
+#' @param risk.table.width relative width of the risk table.
 #' @param merge logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
 #' two separate figures are generated. Default is FALSE.
-#' @param risk.table.width relative width of the risk table.
 #' @param plot.width relative width of the survival plot
 #' @param plot.height relative height of the survival plot. The risk table is adjusted accordingly.
 #' @param plot.margin.left numerical. Used to adjust the plot horizontally.
+#' @param plot.axes.text.size text size of x-axis and y-axis text.
+#' @param plot.axes.title.size text size of x-axis and y-axis titles.
 #' @param legend.labs character vector specifying legend labels. Used to replace the names of the strata from the fit.
 #' Should be given in the same order as those strata.
 #' @param legend.position he position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector)
 #' @param legend.size size of the legend title and legend text.
 #' @param legend.title name of legend title.
-#' @param pval.coord Coords of pvalue within plot.
+#' @param pval.coord coords of pvalue within plot.
+#' @param pval.size size of pvalue within plot
 #' @seealso [ggsurvplot()]
 #' @export
+
 
 survplot_eumelareg <- function (data, time = "time", status = "status", var,
                                 xlab = "Time in months", ylab = "Probability of Survival", axes.offset = FALSE,
@@ -39,7 +45,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var,
                                 plot.axes.text.size =12, plot.axes.title.size = 12,
                                 risk.table.width = 0.92, risk.table.title = NULL,
                                 risk.table.title.size = 12, risk.table.text.size = 12,
-                                legend.position = "top",legend.title = "", legend.labs = NULL, legend.size = 12,
+                                legend.position = "top",legend.title = NULL, legend.labs = NULL, legend.size = 12,
                                 pval = TRUE, pval.coord = c(1,0.1), pval.size = 12,
                                 merge = FALSE, palette = "jco",  ...)
 {
@@ -50,6 +56,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var,
     legend.labs <- sort(unique(data[[var]]))
   }
   legend.labs.risk.table <- gsub(">", "&gt;", legend.labs)
+  data[[var]] <- factor(data[[var]])
 
   # calculate height of table based on presence of risk table title
   table.height <- 1 - plot.height
@@ -87,7 +94,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var,
   ## calculate median survival and draw as table
   surv_med <- surv_median(fit)
   tbl <- as.data.frame(table(data[!is.na(eval(parse(text = time))),
-                                  eval(parse(text = var))]))
+                                    droplevels(eval(parse(text = var)))]))
   tbl$median <- sapply(1:length(surv_med$median), function(x) {
     paste(surv_med$median[x], " (", surv_med$lower[x],
           "-", surv_med$upper[x], ")", sep = "")
@@ -121,5 +128,8 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var,
     list(plot = p1, table = ggpubr::ggarrange(tblGrob))
   }
 }
+
+
+
 
 
