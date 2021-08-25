@@ -27,7 +27,7 @@ survplot_eumelareg(
   risk.table.title.size = 12,
   risk.table.text.size = 12,
   legend.position = "top",
-  legend.title = "",
+  legend.title = NULL,
   legend.labs = NULL,
   legend.size = 12,
   pval = TRUE,
