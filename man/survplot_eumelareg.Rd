@@ -11,23 +11,30 @@ survplot_eumelareg(
   var,
   xlab = "Time in months",
   ylab = "Probability of Survival",
-  pval = TRUE,
+  axes.offset = FALSE,
   break.y.by = 0.1,
   break.time.by = 3,
-  ggtheme = theme_eumelareg_surv_plot(),
-  merge = FALSE,
-  tables.theme = theme_eumelareg_surv_table(),
   xlim = c(0, 48),
-  legend.position = "top",
-  risk.table.width = 0.92,
+  ggtheme = theme_eumelareg_surv_plot(),
+  tables.theme = theme_eumelareg_surv_table(),
   plot.width = 0.838,
   plot.height = 0.7,
-  axes.offset = FALSE,
-  risk.table.title = "No. at risk",
   plot.margin.left = 20,
+  plot.axes.text.size = 12,
+  plot.axes.title.size = 12,
+  risk.table.width = 0.92,
+  risk.table.title = NULL,
+  risk.table.title.size = 12,
+  risk.table.text.size = 12,
+  legend.position = "top",
+  legend.title = NULL,
   legend.labs = NULL,
-  palette = "jco",
+  legend.size = 12,
+  pval = TRUE,
   pval.coord = c(1, 0.1),
+  pval.size = 12,
+  merge = FALSE,
+  palette = "jco",
   ...
 )
 }
@@ -45,40 +52,56 @@ or censoring.}
 
 \item{ylab}{y-axis label.}
 
-\item{pval}{logical value, a numeric or a string. If logical and TRUE, the
-p-value is added on the plot. If numeric, than the computet p-value is
-substituted with the one passed with this parameter. If character, then the
-customized string appears on the plot. See examples - Example 3.}
+\item{axes.offset}{logical value. If TRUE the space between the plot origin and the axes is removed.}
 
 \item{break.y.by}{interval of breaks on the y-axis.}
 
 \item{break.time.by}{Interval of breaks on the x-axis (time axis).}
 
-\item{ggtheme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
-
-\item{merge}{logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
-two separate figures are generated. Default is FALSE.}
-
-\item{tables.theme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
-
 \item{xlim}{x axis limit.}
 
-\item{legend.position}{he position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector)}
+\item{ggtheme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
 
-\item{risk.table.width}{relative width of the risk table.}
+\item{tables.theme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
 
 \item{plot.width}{relative width of the survival plot}
 
 \item{plot.height}{relative height of the survival plot. The risk table is adjusted accordingly.}
 
-\item{axes.offset}{logical value. If TRUE the space between the plot origin and the axes is removed.}
-
-\item{risk.table.title}{the title to be used for the risk table}
-
 \item{plot.margin.left}{numerical. Used to adjust the plot horizontally.}
+
+\item{plot.axes.text.size}{text size of x-axis and y-axis text.}
+
+\item{plot.axes.title.size}{text size of x-axis and y-axis titles.}
+
+\item{risk.table.width}{relative width of the risk table.}
+
+\item{risk.table.title}{the title to be used for the risk table. Default is no title.}
+
+\item{risk.table.title.size}{size of risk table title.}
+
+\item{risk.table.text.size}{size of risk table text.}
+
+\item{legend.position}{he position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector)}
+
+\item{legend.title}{name of legend title.}
 
 \item{legend.labs}{character vector specifying legend labels. Used to replace the names of the strata from the fit.
 Should be given in the same order as those strata.}
+
+\item{legend.size}{size of the legend title and legend text.}
+
+\item{pval}{logical value, a numeric or a string. If logical and TRUE, the
+p-value is added on the plot. If numeric, than the computet p-value is
+substituted with the one passed with this parameter. If character, then the
+customized string appears on the plot. See examples - Example 3.}
+
+\item{pval.coord}{coords of pvalue within plot.}
+
+\item{pval.size}{size of pvalue within plot}
+
+\item{merge}{logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
+two separate figures are generated. Default is FALSE.}
 
 \item{palette}{the color palette to be used. Allowed values include "hue" for
 the default hue color scale; "grey" for grey color palettes; brewer palettes
@@ -88,8 +111,6 @@ e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and sc
 See details section for more information.  Can be also a numeric vector of
 length(groups); in this case a basic color palette is created using the
 function \link[grDevices]{palette}.}
-
-\item{pval.coord}{Coords of pvalue within plot.}
 
 \item{...}{Futher arguments as described hereafter and
 other arguments to be passed i) to ggplot2 geom_*() functions such
