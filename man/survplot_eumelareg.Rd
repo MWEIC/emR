@@ -120,6 +120,6 @@ other arguments to be passed i) to ggplot2 geom_*() functions such
 \description{
 This function plots a default EuMelaReg survival plot (Kaplan-Meier plot) produced with \code{survminer}.
 }
-\seealso{
-\code{\link[=ggsurvplot]{ggsurvplot()}}
+\details{
+Further arguments can be obtained from the \code{\link[=ggsurvplot]{ggsurvplot()}} function.
 }
