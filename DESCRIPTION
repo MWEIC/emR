@@ -20,13 +20,15 @@ Imports:
     htmlTable,
     insight,
     lubridate,
-    networkD3, 
+    networkD3,
+    rstatix, 
     stats,
     stringr,
     survival, 
-    survminer
+    survminer,
+    table1
 Suggests: dplyr
-License: MIT
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

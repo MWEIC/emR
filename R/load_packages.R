@@ -3,7 +3,8 @@
 #' @import htmlTable
 #' @import survival
 #' @import survminer
-#' @importFrom stats as.formula aggregate
+#' @import table1
+#' @importFrom stats as.formula aggregate chisq.test
 #' @importFrom grDevices dev.off png
 NULL
 

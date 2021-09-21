@@ -8,7 +8,7 @@ survplot_eumelareg(
   data,
   time = "time",
   status = "status",
-  var,
+  var = NULL,
   xlab = "Time in months",
   ylab = "Probability of Survival",
   axes.offset = FALSE,
