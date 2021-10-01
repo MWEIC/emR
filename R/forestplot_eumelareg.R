@@ -60,6 +60,8 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
   toShowExpClean$var = as.character(toShowExpClean$var)
   toShowExpClean$var[duplicated(toShowExpClean$var)] = ""
   toShowExpClean$N <- paste0("(N=", toShowExpClean$N, ")")
+  toShowExpClean$levelN <- paste(toShowExpClean$level, toShowExpClean$N) #neu
+  toShowExpClean$estimateCI <- paste(toShowExpClean$estimate.1, toShowExpClean$ci) # neu
   toShowExpClean <- toShowExpClean[nrow(toShowExpClean):1,]
   rangeb <- range(toShowExpClean$conf.low, toShowExpClean$conf.high, na.rm = TRUE)
   breaks <- grDevices::axisTicks(rangeb/2, log = TRUE, nint = 7)
@@ -103,17 +105,18 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
     annotate(geom = "text", x = x_annotate,
              y = exp(y_variable), label = toShowExpClean$var, fontface = "bold",
              hjust = 0, size = annot_size_mm) +
-    annotate(geom = "text", x = x_annotate, y = exp(y_nlevel), hjust = 0, label = toShowExpClean$level,
-             vjust = -0.1, size = annot_size_mm) +
+    annotate(geom = "text", x = x_annotate, y = exp(y_nlevel), hjust = 0, label = toShowExpClean$levelN,
+             # vjust = -0.1,
+             size = annot_size_mm) +
     # Annotate No. of patients
-    annotate(geom = "text", x = x_annotate, y = exp(y_nlevel), label = toShowExpClean$N,
-            fontface = "italic", hjust = 0, vjust = ifelse(toShowExpClean$level == "", 0.5, 1.1), size = annot_size_mm) +
+    # annotate(geom = "text", x = x_annotate, y = exp(y_nlevel), label = toShowExpClean$N,
+    #         fontface = "italic", hjust = 0, vjust = ifelse(toShowExpClean$level == "", 0.5, 1.1), size = annot_size_mm) +
     # Annotate mean HR
-    annotate(geom = "text",  x = x_annotate, y = exp(y_cistring), label = toShowExpClean$estimate.1,
-              size = annot_size_mm, vjust = ifelse(toShowExpClean$estimate.1 ==  "reference", 0.5, -0.1)) +
+    annotate(geom = "text",  x = x_annotate, y = exp(y_cistring), label = toShowExpClean$estimateCI,
+              size = annot_size_mm) +
     # Annotate ci
-    annotate(geom = "text",   x = x_annotate, y = exp(y_cistring), label = toShowExpClean$ci,
-             size = annot_size_mm, vjust = 1.1, fontface = "italic") +
+    # annotate(geom = "text",   x = x_annotate, y = exp(y_cistring), label = toShowExpClean$ci,
+    #          size = annot_size_mm, vjust = 1.1, fontface = "italic") +
     # Annotate stars
     annotate(geom = "text", x = x_annotate, y = exp(y_stars),
              label = toShowExpClean$stars, size = annot_size_mm,
