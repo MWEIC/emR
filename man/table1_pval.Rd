@@ -4,7 +4,7 @@
 \alias{table1_pval}
 \title{Print table1 with pvalues}
 \usage{
-table1_pval(data, strat, vars, footnote = NULL, white.adjust = TRUE)
+table1_pval(data, strat, vars, footnote = NULL, white.adjust = TRUE, ...)
 }
 \arguments{
 \item{data}{data.frame or data.table containing patient characteristics and demographics}
@@ -20,6 +20,8 @@ The default \code{NULL} causes the footnote to be omitted.}
 \item{white.adjust}{Default is FALSE. If TRUE, heteroscedasticity correction
 is applied to the coefficient of covariance matrix. Used only for
 independent measures ANOVA.}
+
+\item{...}{additional arguments passed on to \code{\link[=table1]{table1()}} function.}
 }
 \description{
 This function calculates statistics and prints results in a table generated with \code{\link[=table1]{table1()}}. For categorical data

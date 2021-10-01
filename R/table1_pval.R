@@ -7,10 +7,14 @@
 #' @param vars character vector specifying columns that shall be included in the table
 #' @inheritParams table1::table1
 #' @inheritParams rstatix::anova_test
+#' @param ... additional arguments passed on to [table1()] function.
 #' @export
 
-table1_pval <- function(data, strat, vars, footnote = NULL, white.adjust = TRUE){
+table1_pval <- function(data, strat, vars, footnote = NULL, white.adjust = TRUE, ...){
 
+  if (any(is.na(data[[strat]]))) {
+    warning("There are missing values in the grouping variable. These are excluded from statistical analysis.")
+  }
   # calculate pvalue for each variable grouped by strata
   rndr <- function(x, name, ...) {
     if (length(x) == 0) {
@@ -40,11 +44,9 @@ table1_pval <- function(data, strat, vars, footnote = NULL, white.adjust = TRUE)
   data[[strat]] <- factor(data[[strat]], levels = c(levels(data[[strat]]),2) , labels = c(levels(data[[strat]]),"P-value"))
 
   formula <- as.formula(paste("~", paste(vars, collapse = "+")  , "|", strat))
-  table1(formula, data, droplevels = F, render=rndr,render.missing = NULL, render.strat=rndr.strat, footnote=footnote)
+  table1(formula, data, droplevels = F, render=rndr, render.missing = NULL, render.strat=rndr.strat, footnote=footnote, ...)
 
-  if (any(is.na(data[[strat]]))) {
-    warning("There are missing values in the grouping variable. These are excluded from statistical analysis.")
-    }
 }
+
 
 
