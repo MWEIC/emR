@@ -24,6 +24,8 @@
 #' @param output Defines the output object of the function.  Default is \"table\". Another possible option is \"fit\" to return a coxph object.
 #' @export
 
+
+
 cox_output <- function(data, time, status, vars, fixed.var = NULL, output = "table",  modeltype = "full", p.thres = 0.1, niter = 10){
 
   if (length(vars) > 1) {
