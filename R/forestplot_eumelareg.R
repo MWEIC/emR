@@ -63,6 +63,7 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
   toShowExpClean$levelN <- paste(toShowExpClean$level, toShowExpClean$N) #neu
   toShowExpClean$estimateCI <- paste(toShowExpClean$estimate.1, toShowExpClean$ci) # neu
   toShowExpClean <- toShowExpClean[nrow(toShowExpClean):1,]
+  toShowExpClean$estimate <- ifelse(toShowExpClean$estimate == 0, NA, toShowExpClean$estimate)
   rangeb <- range(toShowExpClean$conf.low, toShowExpClean$conf.high, na.rm = TRUE)
   breaks <- grDevices::axisTicks(rangeb/2, log = TRUE, nint = 7)
   rangeplot <- rangeb
@@ -128,7 +129,7 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
                             round(gmodel$concordance, 2)), size = annot_size_mm,
              hjust = 0, vjust = 1.2, fontface = "italic")
 
-  gt <- ggplot_gtable(ggplot_build(p))
+  gt <-suppressWarnings(ggplot_gtable(ggplot_build(p)))
   gt$layout$clip[gt$layout$name == "panel"] <- "off"
   ggpubr::as_ggplot(gt)
 }
