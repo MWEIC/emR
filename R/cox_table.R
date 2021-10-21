@@ -15,6 +15,7 @@
 #' @param ... additional arguments to be passed on to \code{cox_output}
 #' @export
 
+
 cox_table <- function(data, time, status, vars, rgroup = NULL, footnote = NULL,
                       printHTML = TRUE, univariate = TRUE,...){
 
@@ -24,7 +25,14 @@ cox_table <- function(data, time, status, vars, rgroup = NULL, footnote = NULL,
 
   n <- length(vars)
   tmp <- lapply(vars, cox_output, data = data, time = time, status = status,...)
-  res <- lapply(1:n, function(x){tmp[[x]][-1,]})
+  res <- lapply(1:n, function(x){
+    if(dim(tmp[[x]])[1] == 1) {
+      tmp[[x]]
+      }
+    else {
+      tmp[[x]][-1,]
+      }
+    })
   out <- dplyr::bind_rows(res)
   n.rgroup <- unlist(lapply(1:n, function(x) dim(res[[x]])[1]))
   pvals <- unlist(lapply(1:n, function(x){tmp[[x]][1,]$pvalue}))
@@ -35,7 +43,7 @@ cox_table <- function(data, time, status, vars, rgroup = NULL, footnote = NULL,
   attr(rgroup, "add") <- attr_pval
 
   if (univariate == FALSE){
-    out <- cox_output(data = data, time = time, status = status, vars = vars,...)
+    out <- cox_output(data = data, time = time, status = status, vars = vars)
     attr(rgroup, "add") <- NULL
   }
 
@@ -46,8 +54,4 @@ cox_table <- function(data, time, status, vars, rgroup = NULL, footnote = NULL,
     list(res = out, rgroup = rgroup, n.group = n.rgroup)
   }
 }
-
-
-
-
 
