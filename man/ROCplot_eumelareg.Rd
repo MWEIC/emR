@@ -9,7 +9,7 @@ ROCplot_eumelareg(
   labels,
   print.auc = TRUE,
   print.cutoff = TRUE,
-  cutoff.method = "youden",
+  cutoff.method = c("youden", "closest.topleft"),
   auc.label.x = 0.7,
   auc.label.y = 0.1,
   cutoff.label.x = 0.15,

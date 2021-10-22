@@ -8,10 +8,12 @@ forestplot_eumelareg(
   model,
   data = NULL,
   main = "Hazard ratio for disease progression or death (95\% CI)",
+  y_breaks = NULL,
   cpositions = c(0.02, 0.22, 0.4),
   point.size = 3,
   fontsize = 0.7,
   line.size = 0.7,
+  vjust_text = 1.2,
   refLabel = "reference",
   noDigits = 2,
   varnames = NULL
@@ -25,6 +27,8 @@ will be extracted from 'fit' object.}
 
 \item{main}{title of the plot.}
 
+\item{y_breaks}{argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.}
+
 \item{cpositions}{relative positions of first three columns in the OX scale.}
 
 \item{point.size}{Size of mean points.}
@@ -32,6 +36,8 @@ will be extracted from 'fit' object.}
 \item{fontsize}{relative size of annotations in the plot. Default value: 0.7.}
 
 \item{line.size}{Size of errorbar line.}
+
+\item{vjust_text}{vertical adjustment of text containing information about events, global pvalue, AIC and concordance index}
 
 \item{refLabel}{label for reference levels of factor variables.}
 
