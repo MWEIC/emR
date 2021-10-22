@@ -5,10 +5,12 @@
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
 #' @param point.size Size of mean points.
 #' @param line.size Size of errorbar line.
+#' @param vjust_text vertical adjustment of text containing information about events, global pvalue, AIC and concordance index
+#' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
 #' @export
 
-forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for disease progression or death (95% CI)",
-                       cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7,
+forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
+                       cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2,
                        refLabel = "reference", noDigits = 2, varnames = NULL){
 
   conf.high <- conf.low <- estimate <- var <- NULL
@@ -91,7 +93,6 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
     geom_hline(yintercept = 1, linetype = 2) +
     coord_flip(ylim = exp(rangeplot)) +
     ggtitle(main) +
-    scale_y_log10(name = "", labels = sprintf("%g", breaks), expand = c(0.02, 0.02), breaks = breaks) +
     theme_light() +
     theme(panel.grid.minor.y = element_blank(),
           panel.grid.minor.x = element_blank(),
@@ -109,15 +110,9 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
     annotate(geom = "text", x = x_annotate, y = exp(y_nlevel), hjust = 0, label = toShowExpClean$levelN,
              # vjust = -0.1,
              size = annot_size_mm) +
-    # Annotate No. of patients
-    # annotate(geom = "text", x = x_annotate, y = exp(y_nlevel), label = toShowExpClean$N,
-    #         fontface = "italic", hjust = 0, vjust = ifelse(toShowExpClean$level == "", 0.5, 1.1), size = annot_size_mm) +
     # Annotate mean HR
     annotate(geom = "text",  x = x_annotate, y = exp(y_cistring), label = toShowExpClean$estimateCI,
               size = annot_size_mm) +
-    # Annotate ci
-    # annotate(geom = "text",   x = x_annotate, y = exp(y_cistring), label = toShowExpClean$ci,
-    #          size = annot_size_mm, vjust = 1.1, fontface = "italic") +
     # Annotate stars
     annotate(geom = "text", x = x_annotate, y = exp(y_stars),
              label = toShowExpClean$stars, size = annot_size_mm,
@@ -127,14 +122,18 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
                             format.pval(gmodel$p.value.log, eps = ".001"),
                             " \nAIC: ", round(gmodel$AIC, 2), "; Concordance Index: ",
                             round(gmodel$concordance, 2)), size = annot_size_mm,
-             hjust = 0, vjust = 1.2, fontface = "italic")
+             hjust = 0, vjust = vjust_text, fontface = "italic")
+
+  if(!is.null(y_breaks)){
+    p <- p + scale_y_log10(name = "", expand = c(0.02, 0.02), breaks = y_breaks)
+  } else {
+    p <- p + scale_y_log10(name = "", labels = sprintf("%g", breaks), expand = c(0.02, 0.02), breaks = breaks)
+  }
 
   gt <-suppressWarnings(ggplot_gtable(ggplot_build(p)))
   gt$layout$clip[gt$layout$name == "panel"] <- "off"
   ggpubr::as_ggplot(gt)
 }
-
-
 
 
 
