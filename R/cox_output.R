@@ -96,3 +96,5 @@ cox_output <- function(data, time, status, vars, fixed.var = NULL, output = "tab
 }
 
 
+
+

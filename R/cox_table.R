@@ -24,7 +24,7 @@ cox_table <- function(data, time, status, vars, rgroup = NULL, footnote = NULL,
   }
 
   n <- length(vars)
-  tmp <- lapply(vars, cox_output, data = data, time = time, status = status,...)
+  tmp <- lapply(vars, cox_output, data = data, time = time, status = status, ...)
   res <- lapply(1:n, function(x){
     if(dim(tmp[[x]])[1] == 1) {
       tmp[[x]]
@@ -43,7 +43,7 @@ cox_table <- function(data, time, status, vars, rgroup = NULL, footnote = NULL,
   attr(rgroup, "add") <- attr_pval
 
   if (univariate == FALSE){
-    out <- cox_output(data = data, time = time, status = status, vars = vars)
+    out <- cox_output(data = data, time = time, status = status, vars = vars, ...)
     attr(rgroup, "add") <- NULL
   }
 
@@ -54,4 +54,6 @@ cox_table <- function(data, time, status, vars, rgroup = NULL, footnote = NULL,
     list(res = out, rgroup = rgroup, n.group = n.rgroup)
   }
 }
+
+
 
