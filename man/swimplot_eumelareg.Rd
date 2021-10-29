@@ -8,12 +8,14 @@ swimplot_eumelareg(
   data,
   ID,
   end,
-  response.start,
-  response.end,
-  response.type,
-  continued.response,
-  durable.response,
+  response.start = NULL,
+  response.end = NULL,
+  response.type = NULL,
+  stack.groups = TRUE,
+  continued.response = NULL,
+  durable.response = NULL,
   strat = NULL,
+  symbol.size = 5,
   xlab = NULL,
   ylab = NULL
 )
@@ -32,11 +34,15 @@ Data for Response type, durable response, ongoing treatment and treatmend end ha
 
 \item{response.type}{column that contains information whether patient had complete or partial response.}
 
+\item{stack.groups}{logical value indicating whether subjects should only be sorted by time or also stacked into groups defined by the strat argument. Default is TRUE.}
+
 \item{continued.response}{column that contains (logical) value whether response is ongoing or not.}
 
 \item{durable.response}{column containing (logical) value whether response was durable (equal to or longer than six months).}
 
 \item{strat}{grouping factor. Color of bars are colored accordingly.}
+
+\item{symbol.size}{size of symbols indicating response types}
 
 \item{xlab}{label of x-axis}
 
