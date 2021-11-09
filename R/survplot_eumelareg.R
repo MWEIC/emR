@@ -55,12 +55,13 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
     data <- data[!which(is.na(var))]
     if (is.null(legend.labs)) {
       legend.labs <- sort(unique(data[[var]]))
-    }
+    } else
     legend.labs.risk.table <- gsub(">", "&gt;", legend.labs)
     data[[var]] <- factor(data[[var]])
   } else {
     if (is.null(legend.labs)) {
       legend.labs <- "All"
+      legend.labs.risk.table <- ""
     }
   }
   # calculate height of table based on presence of risk table title
