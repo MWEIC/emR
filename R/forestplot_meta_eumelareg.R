@@ -1,7 +1,14 @@
-#' Forest Plot for Cox Proportional Hazards Model in EuMelaReg style
+#' Meta analysis forest plot
 #'
-#' This code generates a forest plot from a coxph model.
+#' This code generates a forestplot from a meta analysis coxph model.
 #' @inheritParams survminer::ggforest
+#' @param data data
+#' @param time the time interval from start of observation until date of event (e.g. disease progression or death)
+#' or censoring.
+#' @param status variable specifying if event occured or data has been censored.
+#' @param vars variables tested for Influence on outcome.
+#' @param meta.group variable for which meta analysis should be conducted. Usually the outcome of interest (e.g. treatment).
+#' @param univariate Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
 #' @param point.size Size of mean points.
 #' @param line.size Size of errorbar line.
@@ -10,53 +17,23 @@
 #' @export
 
 
-forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
-                                  cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2,
-                                  refLabel = "reference", noDigits = 2, varnames = NULL){
+forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = FALSE, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
+                                  cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2, noDigits = 2, varnames = NULL){
 
   conf.high <- conf.low <- estimate <- var <- NULL
 
-  if(class(model)[1] == "mipo.summary"){
-    if(is.null(data)) stop("Please provide data.")
-    data <- as.data.frame(data)
-    terms <- as.character(data.frame(rbind(lapply(data, class))[, vars])[2,])
-    names(terms) <- vars
-    coef <- model
-    message("Using results from multiple imputation.")
-  } else {
-    stopifnot(inherits(model, "coxph"))
-    data <- insight::get_data(model, data = data)
-    terms <- attr(model$terms, "dataClasses")[-1]
-    coef <- as.data.frame(broom::tidy(model, conf.int = TRUE))
-    gmodel <- broom::glance(model)
-  }
-  allTerms <- lapply(seq_along(terms), function(i) {
-    var <- names(terms)[i]
-    if (terms[i] %in% c("factor", "character")) {
-      adf <- as.data.frame(table(data[, var]))
-      cbind(var = var, adf, pos = 1:nrow(adf))
-    }
-    else if (terms[i] == "numeric") {
-      data.frame(var = var, Var1 = "", Freq = nrow(data),
-                 pos = 1)
-    }
-    else {
-      vars = grep(paste0("^", var, "*."), coef$term,
-                  value = TRUE)
-      data.frame(var = vars, Var1 = "", Freq = nrow(data),
-                 pos = seq_along(vars))
-    }
+  ls <- lapply(vars, coxph_meta_analysis, data = data, time = time, status = status,  meta.group = meta.group, univariate = univariate)
+
+  toShow <- lapply(1:length(ls), function(x){
+    toShow <- do.call(rbind, ls[[x]])
+    toShow <- toShow[toShow$term == paste(meta.group, levels(data[[meta.group]])[2], sep = ""), -c(1,4)]
+    rownames(toShow) <- paste(toShow$var, toShow$level, sep = "")
+    toShow <- toShow[, c("var", "level", "N", "p.value", "estimate", "conf.low", "conf.high")]
+    toShow
   })
-  allTermsDF <- do.call(rbind, allTerms)
-  colnames(allTermsDF) <- c("var", "level", "N","pos")
-  inds <- apply(allTermsDF[, 1:2], 1, paste0, collapse = "")
-  rownames(coef) <- gsub(coef$term, pattern = "`", replacement = "")
-  toShow <- cbind(allTermsDF, coef[inds, ])[, c("var",
-                                                "level", "N", "p.value", "estimate",
-                                                "conf.low", "conf.high", "pos")]
+
+  toShow <- do.call(rbind, toShow)
   if (!is.null(varnames)) toShow$var <- varnames
-
-
   toShowExp <- toShow[, 5:7]
   toShowExp[is.na(toShowExp)] <- 0
   toShowExp <- format(exp(toShowExp), digits = noDigits)
@@ -67,7 +44,6 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
                                  ifelse(toShowExpClean$p.value < 0.001, "*", ""))
   toShowExpClean$ci <- paste0("(", toShowExpClean[, "conf.low.1"],
                               " - ", toShowExpClean[, "conf.high.1"], ")")
-  toShowExpClean$estimate.1[is.na(toShowExpClean$estimate)] = refLabel
   toShowExpClean$stars[which(toShowExpClean$p.value < 0.001)] = "<0.001 ***"
   toShowExpClean$stars[is.na(toShowExpClean$estimate)] = ""
   toShowExpClean$ci[is.na(toShowExpClean$estimate)] = ""
@@ -129,17 +105,7 @@ forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for d
     # Annotate stars
     annotate(geom = "text", x = x_annotate, y = exp(y_stars),
              label = toShowExpClean$stars, size = annot_size_mm,
-             hjust = -0.2, fontface = "italic") #+
-
-  if(inherits(model, "coxph")){
-    p <- p +  annotate(geom = "text", x = 0.5, y = exp(y_variable),
-                       label = paste0("# Events: ",   gmodel$nevent, "; Global p-value (Log-Rank): ",
-                                      format.pval(gmodel$p.value.log, eps = ".001"),
-                                      " \nAIC: ", round(gmodel$AIC, 2), "; Concordance Index: ",
-                                      round(gmodel$concordance, 2)), size = annot_size_mm,
-                       hjust = 0, vjust = vjust_text, fontface = "italic")
-  }
-
+             hjust = -0.2, fontface = "italic")
 
   if(!is.null(y_breaks)){
     p <- p + scale_y_log10(name = "", expand = c(0.02, 0.02), breaks = y_breaks)

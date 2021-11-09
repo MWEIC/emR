@@ -22,6 +22,7 @@ Imports:
     htmlTable,
     insight,
     lubridate,
+    mice,
     networkD3,
     plotROC,
     pROC,
