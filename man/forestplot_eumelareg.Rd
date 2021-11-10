@@ -7,6 +7,7 @@
 forestplot_eumelareg(
   model,
   data = NULL,
+  vars = NULL,
   main = "Hazard ratio for disease progression or death (95\% CI)",
   y_breaks = NULL,
   cpositions = c(0.02, 0.22, 0.4),
@@ -24,6 +25,8 @@ forestplot_eumelareg(
 
 \item{data}{a dataset used to fit survival curves. If not supplied then data
 will be extracted from 'fit' object.}
+
+\item{vars}{variables that were used in the coxph model}
 
 \item{main}{title of the plot.}
 
