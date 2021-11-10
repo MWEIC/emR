@@ -3,6 +3,7 @@
 #' This code generates a forest plot from a coxph model.
 #' @inheritParams survminer::ggforest
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
+#' @param vars variables that were used in the coxph model
 #' @param point.size Size of mean points.
 #' @param line.size Size of errorbar line.
 #' @param vjust_text vertical adjustment of text containing information about events, global pvalue, AIC and concordance index
@@ -10,14 +11,15 @@
 #' @export
 
 
-forestplot_eumelareg <- function (model, data = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
+
+forestplot_eumelareg <- function (model, data = NULL, vars = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
                                   cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2,
                                   refLabel = "reference", noDigits = 2, varnames = NULL){
 
   conf.high <- conf.low <- estimate <- var <- NULL
 
   if(class(model)[1] == "mipo.summary"){
-    if(is.null(data)) stop("Please provide data.")
+    if(is.null(data) | is.null(vars)) stop("Please provide data and variables argument.")
     data <- as.data.frame(data)
     terms <- as.character(data.frame(rbind(lapply(data, class))[, vars])[2,])
     names(terms) <- vars

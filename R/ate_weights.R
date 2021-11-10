@@ -4,7 +4,6 @@
 #' by 1/PS for the factor level that corresponds to 1 and by 1/(1-PS) for the factor level that corresponds to 0.
 #' @param data Character vector specifying rownames of the table (empty columns should be named with "").
 #' @param vars variables tested for Influence on outcome.
-#' @inheritParams mice::mice
 #' @param prop.var variable for which propensity scores should be calculated
 #' @export
 
