@@ -21,7 +21,7 @@ forestplot_eumelareg <- function (model, data = NULL, vars = NULL, main = "Hazar
   if(class(model)[1] == "mipo.summary"){
     if(is.null(data) | is.null(vars)) stop("Please provide data and variables argument.")
     data <- as.data.frame(data)
-    terms <- as.character(data.frame(rbind(lapply(data, class))[, vars])[2,])
+    terms <- as.character(utils::tail(data.frame(rbind(lapply(data, class))[, vars]), n = 1))
     names(terms) <- vars
     coef <- model
     message("Using results from multiple imputation.")
