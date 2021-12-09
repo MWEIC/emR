@@ -55,9 +55,11 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
     data <- data[!which(is.na(var))]
     if (is.null(legend.labs)) {
       legend.labs <- sort(unique(data[[var]]))
-    } else
-    legend.labs.risk.table <- gsub(">", "&gt;", legend.labs)
-    data[[var]] <- factor(data[[var]])
+      legend.labs.risk.table <- gsub(">", "&gt;", legend.labs)
+    } else {
+      legend.labs.risk.table <- gsub(">", "&gt;", legend.labs)
+      data[[var]] <- factor(data[[var]])
+    }
   } else {
     if (is.null(legend.labs)) {
       legend.labs <- "All"
@@ -72,12 +74,9 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
   }
 
   ## fit survival
-  if(!is.null(var)){
-    fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~
-                    eval(parse(text = var)), data = data)
+  if(!is.null(var)){fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
   } else {
-    fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~
-                      1, data = data)
+    fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ 1, data = data)
     pval <- FALSE
   }
 
@@ -129,7 +128,6 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
                                                         axis.ticks = element_blank(), axis.line = element_blank())
 
 
-
   # arrange survplot and survtable
   p1 <- cowplot::ggdraw() +
     cowplot::draw_plot(risk_table, x = 0, y = 0, width = risk.table.width, height = table.height) +
@@ -148,7 +146,6 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
     return(p1)
   }
 }
-
 
 
 

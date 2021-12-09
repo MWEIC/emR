@@ -5,7 +5,7 @@
 \title{Forest Plot for Cox Proportional Hazards Model in EuMelaReg style}
 \usage{
 forestplot_eumelareg(
-  model,
+  fit,
   data = NULL,
   vars = NULL,
   main = "Hazard ratio for disease progression or death (95\% CI)",
@@ -15,13 +15,14 @@ forestplot_eumelareg(
   fontsize = 0.7,
   line.size = 0.7,
   vjust_text = 1.2,
+  allTerms = NULL,
   refLabel = "reference",
   noDigits = 2,
   varnames = NULL
 )
 }
 \arguments{
-\item{model}{an object of class coxph.}
+\item{fit}{an object of class coxph or a list containing a mipo object and a list with number patients for each factor level}
 
 \item{data}{a dataset used to fit survival curves. If not supplied then data
 will be extracted from 'fit' object.}

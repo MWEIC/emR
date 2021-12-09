@@ -22,7 +22,7 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
 
   conf.high <- conf.low <- estimate <- var <- NULL
 
-  ls <- lapply(vars, coxph_meta_analysis, data = data, time = time, status = status,  meta.group = meta.group, univariate = univariate)
+  ls <- lapply(vars, coxph_meta_analysis, data = data, time = time, status = status, vars = vars,  meta.group = meta.group, univariate = univariate)
 
   toShow <- lapply(1:length(ls), function(x){
     toShow <- do.call(rbind, ls[[x]])

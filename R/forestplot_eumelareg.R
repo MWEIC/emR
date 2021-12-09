@@ -2,6 +2,7 @@
 #'
 #' This code generates a forest plot from a coxph model.
 #' @inheritParams survminer::ggforest
+#' @param fit an object of class coxph or a list containing a mipo object and a list with number patients for each factor level
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
 #' @param vars variables that were used in the coxph model
 #' @param point.size Size of mean points.
@@ -10,15 +11,19 @@
 #' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
 #' @export
 
-
-
-forestplot_eumelareg <- function (model, data = NULL, vars = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
-                                  cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2,
+forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
+                                  cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2, allTerms = NULL,
                                   refLabel = "reference", noDigits = 2, varnames = NULL){
 
-  conf.high <- conf.low <- estimate <- var <- NULL
+  conf.high <- conf.low <- estimate <- var <- allTerms <- NULL
 
-  if(class(model)[1] == "mipo.summary"){
+  if(any(class(fit) %in% "list")){
+    model <- fit$fit
+  } else {
+    model <- fit
+  }
+
+  if(any(class(model) %in% "mipo.summary")){
     if(is.null(data) | is.null(vars)) stop("Please provide data and variables argument.")
     data <- as.data.frame(data)
     terms <- as.character(utils::tail(data.frame(rbind(lapply(data, class))[, vars]), n = 1))
@@ -32,23 +37,28 @@ forestplot_eumelareg <- function (model, data = NULL, vars = NULL, main = "Hazar
     coef <- as.data.frame(broom::tidy(model, conf.int = TRUE))
     gmodel <- broom::glance(model)
   }
-  allTerms <- lapply(seq_along(terms), function(i) {
-    var <- names(terms)[i]
-    if (terms[i] %in% c("factor", "character")) {
-      adf <- as.data.frame(table(data[, var]))
-      cbind(var = var, adf, pos = 1:nrow(adf))
-    }
-    else if (terms[i] == "numeric") {
-      data.frame(var = var, Var1 = "", Freq = nrow(data),
-                 pos = 1)
-    }
-    else {
-      vars = grep(paste0("^", var, "*."), coef$term,
-                  value = TRUE)
-      data.frame(var = vars, Var1 = "", Freq = nrow(data),
-                 pos = seq_along(vars))
-    }
-  })
+  if(!is.null(fit$n)){
+    allTerms <- fit$n
+  } else {
+    allTerms <- lapply(seq_along(terms), function(i) {
+      var <- names(terms)[i]
+      if (terms[i] %in% c("factor", "character")) {
+        adf <- as.data.frame(table(data[, var]))
+        cbind(var = var, adf, pos = 1:nrow(adf))
+      }
+      else if (terms[i] == "numeric") {
+        data.frame(var = var, Var1 = "", Freq = nrow(data),
+                   pos = 1)
+      }
+      else {
+        vars = grep(paste0("^", var, "*."), coef$term,
+                    value = TRUE)
+        data.frame(var = vars, Var1 = "", Freq = nrow(data),
+                   pos = seq_along(vars))
+      }
+    })
+  }
+
   allTermsDF <- do.call(rbind, allTerms)
   colnames(allTermsDF) <- c("var", "level", "N","pos")
   inds <- apply(allTermsDF[, 1:2], 1, paste0, collapse = "")
