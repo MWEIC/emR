@@ -2,6 +2,7 @@
 #'
 #' This code generates a forest plot from a coxph model.
 #' @inheritParams survminer::ggforest
+#' @param fit an object of class coxph or a list containing a mipo object and a list with number patients for each factor level
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
 #' @param vars variables that were used in the coxph model
 #' @param point.size Size of mean points.
@@ -10,12 +11,11 @@
 #' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
 #' @export
 
-
 forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
                                   cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2, allTerms = NULL,
                                   refLabel = "reference", noDigits = 2, varnames = NULL){
 
-  conf.high <- conf.low <- estimate <- var <- NULL
+  conf.high <- conf.low <- estimate <- var <- allTerms <- NULL
 
   if(any(class(fit) %in% "list")){
     model <- fit$fit
@@ -37,7 +37,7 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
     coef <- as.data.frame(broom::tidy(model, conf.int = TRUE))
     gmodel <- broom::glance(model)
   }
-  if(any(class(model) %in% "mipo.summary")){
+  if(!is.null(fit$n)){
     allTerms <- fit$n
   } else {
     allTerms <- lapply(seq_along(terms), function(i) {

@@ -22,6 +22,8 @@ forestplot_eumelareg(
 )
 }
 \arguments{
+\item{fit}{an object of class coxph or a list containing a mipo object and a list with number patients for each factor level}
+
 \item{data}{a dataset used to fit survival curves. If not supplied then data
 will be extracted from 'fit' object.}
 
