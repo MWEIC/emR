@@ -58,7 +58,7 @@ mi_coxph <- function(data, time, status, vars, prop.var = NULL,  m = 5, ...){
   if(!is.null(prop.var)) message("Inverse propensity score weighting was used within cox regression.")
 
   # return results
-  list(fit = res, n = n)
+  list(fit = res, nfit = n)
 
 }
 

@@ -14,11 +14,12 @@
 #' @param line.size Size of errorbar line.
 #' @param vjust_text vertical adjustment of text containing information about events, global pvalue, AIC and concordance index
 #' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
+#' @param ylim argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.
 #' @export
 
-
-forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = FALSE, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
-                                  cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2, noDigits = 2, varnames = NULL){
+forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = FALSE, main = "Hazard ratio for disease progression or death (95% CI)",
+                                       y_breaks = NULL, cpositions = c(0, 0.1, 0.3),point.size = 3, fontsize = 0.7,line.size = 0.7,
+                                       vjust_text = 1.2, noDigits = 2, varnames = NULL, ylim = NULL){
 
   conf.high <- conf.low <- estimate <- var <- NULL
 
@@ -51,8 +52,8 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
   toShowExpClean$var = as.character(toShowExpClean$var)
   toShowExpClean$var[duplicated(toShowExpClean$var)] = ""
   toShowExpClean$N <- paste0("(N=", toShowExpClean$N, ")")
-  toShowExpClean$levelN <- paste(toShowExpClean$level, toShowExpClean$N) #neu
-  toShowExpClean$estimateCI <- paste(toShowExpClean$estimate.1, toShowExpClean$ci) # neu
+  toShowExpClean$levelN <- paste(toShowExpClean$level, toShowExpClean$N)
+  toShowExpClean$estimateCI <- paste(toShowExpClean$estimate.1, toShowExpClean$ci)
   toShowExpClean <- toShowExpClean[nrow(toShowExpClean):1,]
   toShowExpClean$estimate <- ifelse(toShowExpClean$estimate == 0, NA, toShowExpClean$estimate)
   rangeb <- range(toShowExpClean$conf.low, toShowExpClean$conf.high, na.rm = TRUE)
@@ -60,6 +61,11 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
   rangeplot <- rangeb
   rangeplot[1] <- rangeplot[1] - diff(rangeb)
   rangeplot[2] <- rangeplot[2] + 0.15 * diff(rangeb)
+  if (!is.null(ylim)) {
+    rangeplot <- log(ylim)
+    toShowExpClean$conf.high <- ifelse(log(ylim[2]) < toShowExpClean$conf.high, NA, toShowExpClean$conf.high)
+    toShowExpClean$conf.low <- ifelse(log(ylim[1]) > toShowExpClean$conf.low, NA, toShowExpClean$conf.low)
+  }
   width <- diff(rangeplot)
   y_variable <- rangeplot[1] + cpositions[1] * width
   y_nlevel <- rangeplot[1] + cpositions[2] * width
@@ -103,7 +109,7 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
     annotate(geom = "text",  x = x_annotate, y = exp(y_cistring), label = toShowExpClean$estimateCI,
              size = annot_size_mm) +
     # Annotate stars
-    annotate(geom = "text", x = x_annotate, y = exp(y_stars),
+    annotate(geom = "text", x = x_annotate, y = if(!is.null(ylim)) ylim[2]-0.4*ylim[2] else exp(y_stars),
              label = toShowExpClean$stars, size = annot_size_mm,
              hjust = -0.2, fontface = "italic")
 
@@ -117,6 +123,7 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
   gt$layout$clip[gt$layout$name == "panel"] <- "off"
   ggpubr::as_ggplot(gt)
 }
+
 
 
 

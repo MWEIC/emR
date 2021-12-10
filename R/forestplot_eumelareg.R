@@ -9,13 +9,14 @@
 #' @param line.size Size of errorbar line.
 #' @param vjust_text vertical adjustment of text containing information about events, global pvalue, AIC and concordance index
 #' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
+#' @param ylim argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.
 #' @export
 
 forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
-                                  cpositions = c(0.02,   0.22, 0.4),point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2, allTerms = NULL,
-                                  refLabel = "reference", noDigits = 2, varnames = NULL){
+                                  cpositions = c(0, 0.1, 0.3), point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2,
+                                  refLabel = "reference", noDigits = 2, varnames = NULL, ylim = NULL){
 
-  conf.high <- conf.low <- estimate <- var <- allTerms <- NULL
+  conf.high <- conf.low <- estimate <- var <-  NULL
 
   if(any(class(fit) %in% "list")){
     model <- fit$fit
@@ -37,8 +38,8 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
     coef <- as.data.frame(broom::tidy(model, conf.int = TRUE))
     gmodel <- broom::glance(model)
   }
-  if(!is.null(fit$n)){
-    allTerms <- fit$n
+  if(!is.null(fit$nfit)){
+    allTerms <- fit$nfit
   } else {
     allTerms <- lapply(seq_along(terms), function(i) {
       var <- names(terms)[i]
@@ -91,11 +92,17 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
   toShowExpClean$estimateCI <- paste(toShowExpClean$estimate.1, toShowExpClean$ci) # neu
   toShowExpClean <- toShowExpClean[nrow(toShowExpClean):1,]
   toShowExpClean$estimate <- ifelse(toShowExpClean$estimate == 0, NA, toShowExpClean$estimate)
+  toShowExpClean <- toShowExpClean[toShowExpClean$var != "(weights)",] #
   rangeb <- range(toShowExpClean$conf.low, toShowExpClean$conf.high, na.rm = TRUE)
   breaks <- grDevices::axisTicks(rangeb/2, log = TRUE, nint = 7)
   rangeplot <- rangeb
   rangeplot[1] <- rangeplot[1] - diff(rangeb)
   rangeplot[2] <- rangeplot[2] + 0.15 * diff(rangeb)
+  if (!is.null(ylim)) {
+    rangeplot <- log(ylim)
+    toShowExpClean$conf.high <- ifelse(log(ylim[2]) < toShowExpClean$conf.high, NA, toShowExpClean$conf.high)
+    toShowExpClean$conf.low <- ifelse(log(ylim[1]) > toShowExpClean$conf.low, NA, toShowExpClean$conf.low)
+  }
   width <- diff(rangeplot)
   y_variable <- rangeplot[1] + cpositions[1] * width
   y_nlevel <- rangeplot[1] + cpositions[2] * width
@@ -139,7 +146,7 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
     annotate(geom = "text",  x = x_annotate, y = exp(y_cistring), label = toShowExpClean$estimateCI,
              size = annot_size_mm) +
     # Annotate stars
-    annotate(geom = "text", x = x_annotate, y = exp(y_stars),
+    annotate(geom = "text", x = x_annotate, y = if(!is.null(ylim)) ylim[2]-0.4*ylim[2] else exp(y_stars),
              label = toShowExpClean$stars, size = annot_size_mm,
              hjust = -0.2, fontface = "italic") #+
 

@@ -13,13 +13,14 @@ forestplot_meta_eumelareg(
   univariate = FALSE,
   main = "Hazard ratio for disease progression or death (95\% CI)",
   y_breaks = NULL,
-  cpositions = c(0.02, 0.22, 0.4),
+  cpositions = c(0, 0.1, 0.3),
   point.size = 3,
   fontsize = 0.7,
   line.size = 0.7,
   vjust_text = 1.2,
   noDigits = 2,
-  varnames = NULL
+  varnames = NULL,
+  ylim = NULL
 )
 }
 \arguments{
@@ -53,6 +54,8 @@ or censoring.}
 \item{noDigits}{number of digits for estimates and p-values in the plot.}
 
 \item{varnames}{Character vector specifying rownames of the table (empty columns should be named with "").}
+
+\item{ylim}{argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.}
 }
 \description{
 This code generates a forestplot from a meta analysis coxph model.
