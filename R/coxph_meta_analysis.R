@@ -14,25 +14,41 @@
 #' @export
 
 coxph_meta_analysis <- function(data, time, status, vars, var, meta.group, univariate = FALSE, ...){
-  res <- lapply(1:length(levels(data[[var]])), function(x){
 
-    if(univariate == FALSE){
-      vars_coxph <- c(vars[vars != var], meta.group)
-      vars_input <- paste(vars_coxph, collapse = " + ")
-    } else {
-      vars_input <- meta.group
-    }
+  if(!is.factor(data[[meta.group]])) stop("Grouping variable has to be a factor.")
+  if(length(levels(data[[meta.group]])) != 2) stop("Grouping factor must have exactly two levels")
 
-    dat <- data[eval(parse(text = var)) == levels(data[[var]])[x]]
-    fit <- coxph(as.formula(paste("Surv(", time,", ", status,") ~ ", vars_input, sep = "")), data = dat, ...)
+  if(!is.numeric(data[[var]])){
+    res <- lapply(1:length(levels(data[[var]])), function(x) {
+      if (univariate == FALSE) {
+        vars_coxph <- c(vars[vars != var], meta.group)
+        vars_input <- paste(vars_coxph, collapse = " + ")
+      }
+      else {
+        vars_input <- meta.group
+      }
+      dat <- data[eval(parse(text = var)) == levels(data[[var]])[x]]
+      fit <- coxph(as.formula(paste("Surv(", time, ", ",
+                                    status, ") ~ ", vars_input, sep = "")),
+                   data = dat)
+      df <- as.data.frame(broom::tidy(fit, conf.int = TRUE))
+      df$var <- var
+      df$level <- levels(data[[var]])[x]
+      df$N <- dim(dat)[1]
+      df
+    })
+    return(res)
+  } else {
+    dat <- data
+    fit <- coxph(as.formula(paste("Surv(", time, ", ",
+                                  status, ") ~ ", vars_input, sep = "")),
+                 data = dat)
     df <- as.data.frame(broom::tidy(fit, conf.int = TRUE))
     df$var <- var
-    df$level <- levels(data[[var]])[x]
+    df$level <- ""
     df$N <- dim(dat)[1]
     df
-
-  })
-  return(res)
+  }
 }
 
 
