@@ -1,9 +1,15 @@
 #' Calculate cox regression and extract Hazard Ratio and pvalues
 #'
+
+#' This function calculates a cox regression with the \code{coxph} function of the \code{survival}
+#' package (univariate if number of vars = 1, multivariate if number of vars > 1). Hazard ratios and pvalues are extracted and shown in a table format. If a variable is divided in more
+#' than 2 groups the wald test statistic for overall significance is also shown.
+
 #' This function calculates a univariate cox regression with the \code{coxph} function from the \code{survival}
 #' package if the argument vars is length 1; otherwise a multivariate cox regression is calculated. Hazard ratios and pvalues are extracted and shown in a table format.
 #' If a variable in univariate cox regression is divided in more than 2 groups the wald test statistic
 #' for overall significance is also shown.
+
 #' @param data data.frame or data.table containing survival data.
 #' @param time the time interval from start of observation until date of event (e.g. disease progression or death)
 #' or censoring.
