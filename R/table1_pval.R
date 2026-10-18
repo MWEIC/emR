@@ -10,43 +10,39 @@
 #' @param ... additional arguments passed on to [table1()] function.
 #' @export
 
-table1_pval <- function(data, strat, vars, footnote = NULL, white.adjust = TRUE, ...){
-
-  if (any(is.na(data[[strat]]))) {
-    warning("There are missing values in the grouping variable. These are excluded from statistical analysis.")
+table1_pval <- function(data, strat, vars, footnote = NULL, white.adjust = TRUE, ...) {
+  if (!is.factor(data[[strat]])) {
+    data[[strat]] <- factor(data[[strat]])
   }
-  # calculate pvalue for each variable grouped by strata
-  rndr <- function(x, name, ...) {
-    if (length(x) == 0) {
-      y <- data[[name]]
-      ind <- !is.na(y)
-      y <- y[ind]
-      aov_formula <- as.formula(paste(name, strat, sep = "~"))
-      s <- rep("", length(render.default(x=y, name=name, ...)))
-      if (is.numeric(y)) {
-        p <- suppressWarnings(rstatix::anova_test(data, formula = aov_formula, white.adjust = white.adjust)$p)
-      } else {
-        p <- chisq.test(table(y, droplevels(data[[strat]][ind])))$p.value
-      }
-      s[2] <- sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
-      s
+  if (anyNA(data[[strat]])) {
+    warning("Missing values in the grouping variable are excluded from the table and from statistical tests.")
+    data <- data[!is.na(data[[strat]]), , drop = FALSE]
+    data[[strat]] <- droplevels(data[[strat]])
+  }
+  pvalue <- function(x, name, ...) {
+    y <- unlist(x, use.names = FALSE)
+    g <- factor(rep(names(x), times = lengths(x)))
+    g <- droplevels(g)
+    if (length(unique(g)) < 2L) {
+      p <- NA_real_
+    } else if (is.numeric(y)) {
+      dat <- data.frame(y = y, g = g)
+      p <- suppressWarnings(
+        rstatix::anova_test(dat, formula = y ~ g, white.adjust = white.adjust)$p
+      )
     } else {
-      render.default(x=x, name=name, ...)
+      p <- suppressWarnings(chisq.test(table(y, g))$p.value)
     }
+    c("", sub("<", "&lt;", format.pval(p, digits = 3, eps = 0.001)))
   }
-
-  # add names to new strata
-  rndr.strat <- function(label, n, ...) {
-    ifelse(n==0, label, render.strat.default(label, n, ...))
-  }
-
-  # add column with pvalues
-  data[[strat]] <- factor(data[[strat]], levels = c(levels(data[[strat]]),2) , labels = c(levels(data[[strat]]),"P-value"))
-
-  formula <- as.formula(paste("~", paste(vars, collapse = "+")  , "|", strat))
-  table1(formula, data, droplevels = F, render=rndr, render.missing = NULL, render.strat=rndr.strat, footnote=footnote, ...)
-
+  formula <- as.formula(paste("~", paste(vars, collapse = " + "), "|", strat))
+  table1(
+    formula, data,
+    extra.col = list(`P-value` = pvalue),
+    render.missing = NULL,
+    footnote = footnote,
+    ...
+  )
 }
-
 
 
