@@ -17,24 +17,25 @@ survplot_eumelareg(
   xlim = c(0, 48),
   ggtheme = theme_eumelareg_surv_plot(),
   tables.theme = theme_eumelareg_surv_table(),
+  color.table.title = TRUE,
   plot.width = 0.838,
-  plot.height = 0.7,
-  plot.margin.left = 20,
-  plot.axes.text.size = 12,
-  plot.axes.title.size = 12,
-  risk.table.width = 0.92,
+  plot.height = 0.88,
+  plot.margin.left = NULL,
+  text.size = 12,
+  weights = NULL,
+  landmarks = c(12, 24),
+  conf.type = "log-log",
+  risk.table.width = 0.9,
   risk.table.title = NULL,
-  risk.table.title.size = 12,
-  risk.table.text.size = 12,
   legend.position = "top",
-  legend.title = NULL,
+  legend.title = "",
   legend.labs = NULL,
-  legend.size = 12,
-  pval = TRUE,
+  show.pval = TRUE,
   pval.coord = c(1, 0.1),
-  pval.size = 12,
   merge = FALSE,
   palette = "jco",
+  extract.legend = FALSE,
+  return.fit = FALSE,
   ...
 )
 }
@@ -64,23 +65,26 @@ or censoring.}
 
 \item{tables.theme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
 
+\item{color.table.title}{logical value. If TRUE table will be colored in the same values as the graph. Default is TRUE.}
+
 \item{plot.width}{relative width of the survival plot}
 
 \item{plot.height}{relative height of the survival plot. The risk table is adjusted accordingly.}
 
 \item{plot.margin.left}{numerical. Used to adjust the plot horizontally.}
 
-\item{plot.axes.text.size}{text size of x-axis and y-axis text.}
+\item{text.size}{size of plot text.}
 
-\item{plot.axes.title.size}{text size of x-axis and y-axis titles.}
+\item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
+
+\item{landmarks}{times for which landmark survival data shall be provided.
+Should be given in the same order as those strata.}
+
+\item{conf.type}{Method to calculate confidence intervals. Log-log method is the default in SAS.}
 
 \item{risk.table.width}{relative width of the risk table.}
 
 \item{risk.table.title}{the title to be used for the risk table. Default is no title.}
-
-\item{risk.table.title.size}{size of risk table title.}
-
-\item{risk.table.text.size}{size of risk table text.}
 
 \item{legend.position}{he position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector)}
 
@@ -89,16 +93,9 @@ or censoring.}
 \item{legend.labs}{character vector specifying legend labels. Used to replace the names of the strata from the fit.
 Should be given in the same order as those strata.}
 
-\item{legend.size}{size of the legend title and legend text.}
-
-\item{pval}{logical value, a numeric or a string. If logical and TRUE, the
-p-value is added on the plot. If numeric, than the computet p-value is
-substituted with the one passed with this parameter. If character, then the
-customized string appears on the plot. See examples - Example 3.}
+\item{show.pval}{logical indicating whether pvalue should be displayed.}
 
 \item{pval.coord}{coords of pvalue within plot.}
-
-\item{pval.size}{size of pvalue within plot}
 
 \item{merge}{logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
 two separate figures are generated. Default is FALSE.}
@@ -111,6 +108,10 @@ e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and sc
 See details section for more information.  Can be also a numeric vector of
 length(groups); in this case a basic color palette is created using the
 function \link[grDevices]{palette}.}
+
+\item{extract.legend}{logical indicating whether only the legend should be extracted from the plot to build manual arrangements of plots and legend with \code{\link[=ggarrange]{ggarrange()}}}
+
+\item{return.fit}{logical indicating whether the fit object should be returned instead of the plot}
 
 \item{...}{Futher arguments as described hereafter and
 other arguments to be passed i) to ggplot2 geom_*() functions such

@@ -10,13 +10,18 @@ forestplot_meta_eumelareg(
   status,
   vars,
   meta.group,
-  univariate = FALSE,
+  univariate = TRUE,
+  weights = NULL,
+  imputation = FALSE,
   main = "Hazard ratio for disease progression or death (95\% CI)",
+  na.rm = FALSE,
   y_breaks = NULL,
   cpositions = c(0, 0.1, 0.3),
-  point.size = 3,
-  fontsize = 0.7,
-  line.size = 0.7,
+  impIter = 25,
+  refLabel = "reference",
+  point_size = 4,
+  fontsize = 1,
+  line_size = 0.9,
   vjust_text = 1.2,
   noDigits = 2,
   varnames = NULL,
@@ -37,17 +42,28 @@ or censoring.}
 
 \item{univariate}{Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate}
 
+\item{weights}{variable providing weights for downstream coxph analysis. If imputation == TRUE weights will be calculated internally
+within the imputation call. Set weights == TRUE/FALSE, if using multiple imputation, otherwise provide vector with weights the same length as the data.frame.}
+
+\item{imputation}{Logical variable specifying whether missing should be replaced by multiple imputation}
+
 \item{main}{title of the plot.}
+
+\item{na.rm}{logical indicating whether missing values (Specified as "missing" or "Missing") should be removed}
 
 \item{y_breaks}{argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.}
 
 \item{cpositions}{relative positions of first three columns in the OX scale.}
 
-\item{point.size}{Size of mean points.}
+\item{impIter}{number of iterations for multiple imputation.}
+
+\item{refLabel}{label for reference levels of factor variables.}
+
+\item{point_size}{Size of mean points.}
 
 \item{fontsize}{relative size of annotations in the plot. Default value: 0.7.}
 
-\item{line.size}{Size of errorbar line.}
+\item{line_size}{Size of errorbar line.}
 
 \item{vjust_text}{vertical adjustment of text containing information about events, global pvalue, AIC and concordance index}
 

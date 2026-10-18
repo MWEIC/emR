@@ -1,6 +1,6 @@
 Package: emR
 Title: Dictionary for EuMelaReg functions (analysis of clinical studies)
-Version: 0.1.0
+Version: 0.6.5
 Authors@R: 
     person(given = "Marc",
            family = "Bender",
@@ -11,6 +11,7 @@ Imports:
     broom,
     cowplot,
     data.table,
+    flextable,
     ggsci,
     ggpubr,
     ggplot2,
@@ -22,23 +23,25 @@ Imports:
     htmlTable,
     insight,
     lubridate,
-    mice,
-    networkD3,
+    mice (>= 3.14.0),
+    matrixStats,
     plotROC,
     pROC,
     rstatix, 
+    rlist,
     RColorBrewer,
     scales,
     stats,
+    stringi,
     stringr,
     survival, 
     survminer,
     table1,
     textshape, 
     tibble
-Suggests: dplyr
+Suggests: dplyr, pbapply
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1.9001
+RoxygenNote: 7.3.1
